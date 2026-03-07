@@ -216,11 +216,11 @@ const Dashboard = () => {
           <h3 className="text-lg font-heading font-semibold text-foreground mb-4">{t("dashboard.aboutSkimPintar")}</h3>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground">
             <div>
-              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintar")} — $5/{t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}</h4>
+              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintar")} — $5-$15/{t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}</h4>
               <p>{t("plan.pintarDesc")}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintarPlus")} — $20/{t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}</h4>
+              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintarPlus")} — $20+/{t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}</h4>
               <p>{t("plan.pintarPlusDesc")}</p>
             </div>
           </div>
