@@ -62,6 +62,30 @@ export type Database = {
         }
         Relationships: []
       }
+      hasanat: {
+        Row: {
+          id: string
+          total_amount: number
+          total_points: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          total_amount?: number
+          total_points?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          total_amount?: number
+          total_points?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
