@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle } from "lucide-react";
+import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle, Mail } from "lucide-react";
 import { toast } from "sonner";
 
 type Application = {
@@ -93,6 +93,10 @@ const Dashboard = () => {
             <Button variant="ghost" size="sm" onClick={() => navigate("/faq")} className="text-muted-foreground">
               <HelpCircle className="w-4 h-4 mr-1" />
               FAQ
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => navigate("/contact")} className="text-muted-foreground">
+              <Mail className="w-4 h-4 mr-1" />
+              Contact Us
             </Button>
           </div>
           <div className="flex items-center gap-2">
