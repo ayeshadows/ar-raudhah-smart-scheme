@@ -59,11 +59,10 @@ const AuthPage = () => {
             <div className="w-16 h-16 rounded-2xl gradient-gold flex items-center justify-center mb-6">
               <span className="text-2xl font-heading font-bold text-primary">AR</span>
             </div>
-            <h1 className="text-4xl font-heading font-bold text-primary-foreground mb-4">
-              Skim Pintar
-            </h1>
+            <h1 className="text-4xl font-heading font-bold text-primary-foreground mb-4">Skim Pintar</h1>
             <p className="text-lg text-primary-foreground/80 font-body">
-              Masjid Ar-Raudhah's monthly donation scheme — now fully digital with easy card payments and real-time tracking.
+              Masjid Ar-Raudhah's monthly donation scheme — now fully digital with easy card payments and real-time
+              tracking.
             </p>
           </div>
 
@@ -120,7 +119,11 @@ const AuthPage = () => {
         >
           <div className="lg:hidden mb-8">
             <div className="w-12 h-12 rounded-xl gradient-gold flex items-center justify-center mb-4">
-              <span className="text-lg font-heading font-bold text-primary">AR</span>
+              <img
+                src="/araudhah_logo.jpg"
+                alt="Masjid Ar-Raudhah Logo"
+                className="w-10 h-10 rounded-lg object-contain"
+              />
             </div>
             <h1 className="text-2xl font-heading font-bold text-foreground">Skim Pintar</h1>
           </div>
@@ -129,15 +132,15 @@ const AuthPage = () => {
             {isLogin ? "Welcome back" : "Create account"}
           </h2>
           <p className="text-muted-foreground mb-8 font-body text-sm">
-            {isLogin
-              ? "Sign in to manage your Skim Pintar membership"
-              : "Register to apply for Skim Pintar"}
+            {isLogin ? "Sign in to manage your Skim Pintar membership" : "Register to apply for Skim Pintar"}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-sm font-medium">Full Name</Label>
+                <Label htmlFor="fullName" className="text-sm font-medium">
+                  Full Name
+                </Label>
                 <Input
                   id="fullName"
                   type="text"
@@ -151,7 +154,9 @@ const AuthPage = () => {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+              <Label htmlFor="email" className="text-sm font-medium">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -164,7 +169,9 @@ const AuthPage = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+              <Label htmlFor="password" className="text-sm font-medium">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
@@ -177,21 +184,14 @@ const AuthPage = () => {
               />
             </div>
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-12 rounded-lg text-base font-semibold"
-            >
+            <Button type="submit" disabled={loading} className="w-full h-12 rounded-lg text-base font-semibold">
               {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
             </Button>
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-primary font-semibold hover:underline"
-            >
+            <button onClick={() => setIsLogin(!isLogin)} className="text-primary font-semibold hover:underline">
               {isLogin ? "Sign up" : "Sign in"}
             </button>
           </p>
