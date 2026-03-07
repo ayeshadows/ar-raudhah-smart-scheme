@@ -94,6 +94,10 @@ const Dashboard = () => {
               <HelpCircle className="w-4 h-4 mr-1" />
               FAQ
             </Button>
+            <Button variant="ghost" size="sm" onClick={() => navigate("/contact")} className="text-muted-foreground">
+              <Mail className="w-4 h-4 mr-1" />
+              Contact Us
+            </Button>
           </div>
           <div className="flex items-center gap-2">
             <Button
