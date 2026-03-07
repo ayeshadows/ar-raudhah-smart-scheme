@@ -20,12 +20,12 @@ const Index = () => {
       {/* Hero */}
       <header className="gradient-hero islamic-pattern relative overflow-hidden">
         <div className="container max-w-5xl mx-auto px-6 py-8">
-          <div className="flex items-center justify-between mb-16">
+          <div className="flex items-center justify-between mb-16 text-secondary-foreground">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
-                
+                <span className="text-sm font-heading font-bold text-primary">AR</span>
               </div>
-              <span className="text-primary-foreground font-heading font-semibold">Masjid Ar-Raudhah</span>
+              <span className="font-heading font-semibold text-secondary-foreground">Masjid Ar-Raudhah</span>
             </div>
             <Button
               variant="outline"
@@ -46,10 +46,10 @@ const Index = () => {
               <Star className="w-3.5 h-3.5 text-accent" />
               <span className="text-xs font-semibold text-accent">Now Digital — No More GIRO Forms</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-heading font-bold mb-5 leading-tight text-sidebar-border">
+            <h1 className="text-4xl md:text-5xl font-heading font-bold mb-5 leading-tight text-secondary-foreground">
               Skim Pintar
             </h1>
-            <p className="text-lg text-primary-foreground/80 mb-8 max-w-lg">
+            <p className="text-lg mb-8 max-w-lg text-secondary-foreground">
               A monthly donation scheme with complimentary funeral services. Now with Singpass registration and convenient card payments.
             </p>
             <div className="flex flex-wrap gap-3">
