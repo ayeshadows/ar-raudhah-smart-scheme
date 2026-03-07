@@ -47,9 +47,16 @@ const Index = () => {
             <Button
               variant="ghost"
               size="sm"
+              onClick={() => setAboutOpen(true)}
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
+              <Info className="w-4 h-4 mr-1" />
+              About Us
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => navigate("/faq")}
               className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
-              
               <HelpCircle className="w-4 h-4 mr-1" />
               FAQ
             </Button>
@@ -58,9 +65,16 @@ const Index = () => {
               size="sm"
               onClick={() => navigate("/contact")}
               className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
-              
               <Mail className="w-4 h-4 mr-1" />
               Contact Us
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/settings")}
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
+              <Settings className="w-4 h-4 mr-1" />
+              Settings
             </Button>
           </div>
         </div>
