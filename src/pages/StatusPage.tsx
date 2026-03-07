@@ -106,6 +106,10 @@ const StatusPage = () => {
       </header>
 
       <main className="container max-w-3xl mx-auto px-6 py-10">
+        <div className="text-center mb-10">
+          <h2 className="text-xl font-heading font-semibold text-foreground mb-2">JazakAllahu Khair for your support.</h2>
+          <p className="text-sm text-muted-foreground">Your contribution helps strengthen our community and may it weigh heavy on your Meezan.</p>
+        </div>
         {applications.length === 0 ? (
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="text-center py-20">
             <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
