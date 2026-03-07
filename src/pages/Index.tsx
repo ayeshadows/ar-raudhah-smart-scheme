@@ -48,7 +48,7 @@ const Index = () => {
               variant="ghost"
               size="sm"
               onClick={() => setAboutOpen(true)}
-              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
+              className="text-foreground/80 hover:text-foreground hover:bg-foreground/10">
               <Info className="w-4 h-4 mr-1" />
               About Us
             </Button>
@@ -56,7 +56,7 @@ const Index = () => {
               variant="ghost"
               size="sm"
               onClick={() => navigate("/faq")}
-              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
+              className="text-foreground/80 hover:text-foreground hover:bg-foreground/10">
               <HelpCircle className="w-4 h-4 mr-1" />
               FAQ
             </Button>
@@ -64,7 +64,7 @@ const Index = () => {
               variant="ghost"
               size="sm"
               onClick={() => navigate("/contact")}
-              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
+              className="text-foreground/80 hover:text-foreground hover:bg-foreground/10">
               <Mail className="w-4 h-4 mr-1" />
               Contact Us
             </Button>
@@ -72,7 +72,7 @@ const Index = () => {
               variant="ghost"
               size="sm"
               onClick={() => navigate("/settings")}
-              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
+              className="text-foreground/80 hover:text-foreground hover:bg-foreground/10">
               <Settings className="w-4 h-4 mr-1" />
               Settings
             </Button>
@@ -139,7 +139,7 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="relative z-10 py-6 text-center">
-        <p className="text-xs text-primary-foreground/60">
+        <p className="text-xs text-foreground/60">
           © {new Date().getFullYear()} Masjid Ar-Raudhah. All rights reserved.
         </p>
       </footer>
