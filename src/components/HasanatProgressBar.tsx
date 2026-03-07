@@ -111,9 +111,19 @@ const HasanatProgressBar = ({ userId }: { userId: string }) => {
         </div>
       </div>
 
-      <p className="text-xs text-muted-foreground mt-10">
-        Total contributed: <span className="font-semibold text-foreground">${totalAmount.toFixed(2)}</span>
-      </p>
+      <div className="flex items-center justify-between mt-10 text-xs text-muted-foreground">
+        <div>
+          <p className="mb-1">Your contribution helps the mosque with:</p>
+          <ul className="list-disc ml-4 space-y-0.5">
+            <li>Utility and water bills</li>
+            <li>Islamic outreach / Dakwah</li>
+            <li>Everyday operations</li>
+          </ul>
+        </div>
+        <div className="text-right">
+          Total contributed: <span className="font-semibold text-foreground">${totalAmount.toFixed(2)}</span>
+        </div>
+      </div>
     </motion.div>
   );
 };
