@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSettings } from "@/contexts/SettingsContext";
 import {
   Accordion,
   AccordionContent,
@@ -49,6 +50,7 @@ const faqs = [
 
 const FAQPage = () => {
   const navigate = useNavigate();
+  const { t } = useSettings();
 
   return (
     <div className="min-h-screen bg-background">
@@ -59,7 +61,7 @@ const FAQPage = () => {
           </Button>
           <div>
             <h1 className="text-lg font-heading font-semibold text-foreground">
-              FAQs
+              {t("faq.title")}
             </h1>
             <p className="text-xs text-muted-foreground">Skim Pintar</p>
           </div>
@@ -72,7 +74,7 @@ const FAQPage = () => {
           animate={{ opacity: 1, y: 0 }}
         >
           <h2 className="text-2xl font-heading font-bold text-foreground mb-2">
-            Frequently Asked Questions
+            {t("faq.subtitle")}
           </h2>
           <p className="text-muted-foreground mb-8">
             Everything you need to know about Skim Pintar at Masjid Ar-Raudhah.
