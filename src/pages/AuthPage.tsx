@@ -189,7 +189,6 @@ const AuthPage = () => {
             <Button type="submit" disabled={loading} className="w-full h-12 rounded-lg text-base font-semibold">
               {loading ? t("auth.pleaseWait") : isLogin ? t("auth.signIn") : t("auth.signUp")}
             </Button>
-            </Button>
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
