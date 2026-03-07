@@ -16,7 +16,7 @@ const MOCK_MYINFO = {
   date_of_birth: "1990-03-15",
   address: "Blk 123 Bishan Street 12, #08-456, Singapore 570123",
   phone: "91234567",
-  email: "ahmad.abdullah@email.com",
+  email: "ahmad.abdullah@email.com"
 };
 
 const ApplyPage = () => {
@@ -25,7 +25,7 @@ const ApplyPage = () => {
   const [step, setStep] = useState<"start" | "singpass" | "form">("start");
   const [plan, setPlan] = useState<"pintar" | "pintar_plus">("pintar");
   const [formData, setFormData] = useState({
-    full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: "",
+    full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: ""
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -53,13 +53,13 @@ const ApplyPage = () => {
       const { error } = await supabase.from("applications").insert({
         user_id: session.user.id, full_name: formData.full_name, nric: formData.nric,
         date_of_birth: formData.date_of_birth || null, address: formData.address || null,
-        phone: formData.phone || null, email: formData.email || null, plan, status: "pending",
+        phone: formData.phone || null, email: formData.email || null, plan, status: "pending"
       });
       if (error) throw error;
       toast.success("Application submitted successfully!");
       navigate("/status");
-    } catch (error: any) { toast.error(error.message); }
-    finally { setSubmitting(false); }
+    } catch (error: any) {toast.error(error.message);} finally
+    {setSubmitting(false);}
   };
 
   return (
@@ -77,8 +77,8 @@ const ApplyPage = () => {
       </header>
 
       <main className="container max-w-3xl mx-auto px-6 py-10">
-        {step === "start" && (
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
+        {step === "start" &&
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
             <div>
               <h2 className="text-2xl font-heading font-bold text-foreground mb-6">{t("apply.choosePlan")}</h2>
               <RadioGroup value={plan} onValueChange={(v) => setPlan(v as "pintar" | "pintar_plus")} className="grid md:grid-cols-2 gap-4">
@@ -86,7 +86,7 @@ const ApplyPage = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <h3 className="font-semibold text-foreground font-body text-lg">{t("plan.pintar")}</h3>
-                      <p className="text-2xl font-heading font-bold text-primary">$5<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
+                      <p className="text-2xl font-heading font-bold text-primary">$5-$15/month<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
                     </div>
                     <RadioGroupItem value="pintar" />
                   </div>
@@ -96,7 +96,8 @@ const ApplyPage = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <h3 className="font-semibold text-foreground font-body text-lg">{t("plan.pintarPlus")}</h3>
-                      <p className="text-2xl font-heading font-bold text-primary">$20<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
+                      <p className="text-2xl font-heading font-bold text-primary">$20+/month
+                      <span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
                     </div>
                     <RadioGroupItem value="pintar_plus" />
                   </div>
@@ -132,21 +133,20 @@ const ApplyPage = () => {
                 </button>
               </div>
             </div>
-          </motion.div>
-        )}
+          </motion.div>}
 
-        {step === "singpass" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-20">
+        {step === "singpass" &&
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-20">
             <div className="w-16 h-16 rounded-2xl bg-[#F4333D] flex items-center justify-center mb-6 animate-pulse">
               <Shield className="w-8 h-8 text-[#FFFFFF]" />
             </div>
             <h3 className="text-xl font-heading font-semibold text-foreground mb-2">{t("apply.connectingSingpass")}</h3>
             <p className="text-muted-foreground text-sm">{t("apply.retrievingData")}</p>
           </motion.div>
-        )}
+        }
 
-        {step === "form" && (
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+        {step === "form" &&
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <div className="mb-6 flex items-center gap-2 bg-primary/5 border border-primary/20 rounded-lg px-4 py-3">
               <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
               <p className="text-sm text-foreground">
@@ -196,10 +196,10 @@ const ApplyPage = () => {
               </div>
             </form>
           </motion.div>
-        )}
+        }
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default ApplyPage;
