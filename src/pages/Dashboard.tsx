@@ -344,12 +344,16 @@ const Dashboard = () => {
               <ul className="ml-6 list-disc">
                 <li>50% coverage for funeral services for parents/parents-in-law not living in the same household</li>
               </ul>
-              <p className="text-sm text-muted-foreground">123</p>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t">
             <h4 className="font-semibold text-foreground mb-2 text-sm font-body">Additional Charges</h4>
-            <p className="text-sm text-muted-foreground">123</p>
+            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+              <li>Transport from Hospice, Hospital etc.</li>
+              <li>Transport to Mosque (Bathing/Prayer)</li>
+              <li>NEA burial plot</li>
+              <li>24hr doctor's fee for the death verification</li>
+            </ul>
           </div>
         </motion.div>
 
