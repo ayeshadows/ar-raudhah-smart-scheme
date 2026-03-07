@@ -14,7 +14,7 @@ const PaymentPage = () => {
     number: "",
     name: "",
     expiry: "",
-    cvc: "",
+    cvc: ""
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -41,8 +41,8 @@ const PaymentPage = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center max-w-md"
-        >
+          className="text-center max-w-md">
+          
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-8 h-8 text-primary" />
           </div>
@@ -54,8 +54,8 @@ const PaymentPage = () => {
             Back to Dashboard
           </Button>
         </motion.div>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
@@ -88,15 +88,15 @@ const PaymentPage = () => {
           {/* Card Preview */}
           <div className="gradient-hero rounded-2xl p-6 mb-8 text-primary-foreground islamic-pattern">
             <div className="flex justify-between items-start mb-8">
-              <span className="text-xs opacity-60 font-body uppercase tracking-wider">Recurring Payment</span>
+              <span className="text-xs opacity-60 font-body uppercase tracking-wider text-card-foreground">Recurring Payment</span>
               <CreditCard className="w-8 h-8 opacity-60" />
             </div>
-            <p className="text-xl tracking-[0.2em] font-mono mb-6">
+            <p className="text-xl tracking-[0.2em] font-mono mb-6 text-zinc-950">
               {cardData.number || "•••• •••• •••• ••••"}
             </p>
             <div className="flex justify-between text-sm">
               <div>
-                <p className="text-xs opacity-60 mb-1">Card Holder</p>
+                <p className="text-xs opacity-60 mb-1 text-popover-foreground">Card Holder</p>
                 <p className="font-medium">{cardData.name || "YOUR NAME"}</p>
               </div>
               <div>
@@ -116,8 +116,8 @@ const PaymentPage = () => {
                 placeholder="1234 5678 9012 3456"
                 required
                 className="h-12 rounded-lg font-mono tracking-wider"
-                maxLength={19}
-              />
+                maxLength={19} />
+              
             </div>
 
             <div className="space-y-2">
@@ -127,8 +127,8 @@ const PaymentPage = () => {
                 onChange={(e) => setCardData({ ...cardData, name: e.target.value.toUpperCase() })}
                 placeholder="AHMAD BIN ABDULLAH"
                 required
-                className="h-12 rounded-lg"
-              />
+                className="h-12 rounded-lg" />
+              
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -140,8 +140,8 @@ const PaymentPage = () => {
                   placeholder="MM/YY"
                   required
                   className="h-12 rounded-lg"
-                  maxLength={5}
-                />
+                  maxLength={5} />
+                
               </div>
               <div className="space-y-2">
                 <Label className="text-sm font-medium">CVC</Label>
@@ -152,8 +152,8 @@ const PaymentPage = () => {
                   required
                   className="h-12 rounded-lg"
                   maxLength={3}
-                  type="password"
-                />
+                  type="password" />
+                
               </div>
             </div>
 
@@ -163,8 +163,8 @@ const PaymentPage = () => {
           </form>
         </motion.div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default PaymentPage;
