@@ -25,6 +25,7 @@ const ApplyPage = () => {
   const [step, setStep] = useState<"start" | "singpass" | "form">("start");
   const [plan, setPlan] = useState<"pintar" | "pintar_plus">("pintar");
   const [donationAmount, setDonationAmount] = useState("");
+  const [donationError, setDonationError] = useState("");
   const [formData, setFormData] = useState({
     full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: ""
   });
