@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { Settings } from "lucide-react";
+import { Settings, ArrowLeft } from "lucide-react";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -87,6 +87,19 @@ const AuthPage = () => {
 
       {/* Right panel - form */}
       <div className="relative flex-1 flex items-center justify-center p-8">
+        <div className="absolute left-6 top-6 z-10">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={() => navigate("/")}
+            aria-label="Go back"
+            title="Back"
+            className="h-10 w-10 rounded-full border-border bg-card/90 text-foreground shadow-card hover:bg-secondary"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+        </div>
         <Button
           type="button"
           variant="outline"
