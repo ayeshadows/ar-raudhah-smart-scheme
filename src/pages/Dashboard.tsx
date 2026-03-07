@@ -307,12 +307,12 @@ const Dashboard = () => {
           <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground mt-4 pt-4 border-t">
             <div>
               <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.benefits")}</h4>
-              <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+              <ul className="text-sm text-muted-foreground space-y-1 list-none list-inside">
                 <li>
                   <strong>Individual Coverage</strong>
                 </li>
                 <li>Complimentary Funeral Services</li>
-                <ul className="ml-6 list-disc">
+                <ul className="ml-12 list-disc">
                   <li>Bathing, shrouding, prayer, burial</li>
                   <li>Undertaker (Jurumandi)</li>
                   <li>Bathing and shrouding kits (Soap, camphor, perfume, kain kafan)</li>
