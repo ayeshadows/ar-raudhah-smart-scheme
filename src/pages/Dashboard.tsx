@@ -3,10 +3,29 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle, Mail, Receipt, XCircle } from "lucide-react";
+import {
+  LogOut,
+  FileText,
+  CreditCard,
+  Clock,
+  ChevronRight,
+  Settings,
+  HelpCircle,
+  Mail,
+  Receipt,
+  XCircle,
+} from "lucide-react";
 import CoursesSection from "@/components/CoursesSection";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { useSettings } from "@/contexts/SettingsContext";
 
 type Application = {
@@ -38,13 +57,21 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!session) { navigate("/auth"); return; }
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) {
+        navigate("/auth");
+        return;
+      }
       setUser(session.user);
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) { navigate("/auth"); return; }
+      if (!session) {
+        navigate("/auth");
+        return;
+      }
       setUser(session.user);
       fetchApplications(session.user.id).finally(() => setLoading(false));
     });
@@ -79,11 +106,16 @@ const Dashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "approved": return "bg-primary/10 text-primary";
-      case "pending": return "bg-accent/20 text-accent-foreground";
-      case "rejected": return "bg-destructive/10 text-destructive";
-      case "cancelled": return "bg-muted text-muted-foreground";
-      default: return "bg-muted text-muted-foreground";
+      case "approved":
+        return "bg-primary/10 text-primary";
+      case "pending":
+        return "bg-accent/20 text-accent-foreground";
+      case "rejected":
+        return "bg-destructive/10 text-destructive";
+      case "cancelled":
+        return "bg-muted text-muted-foreground";
+      default:
+        return "bg-muted text-muted-foreground";
     }
   };
 
@@ -101,7 +133,11 @@ const Dashboard = () => {
         <div className="container max-w-5xl mx-auto flex items-center justify-between py-4 px-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
-              <img src="/araudhah_logo.jpg" alt="Masjid Ar-Raudhah Logo" className="w-10 h-10 rounded-lg object-contain" />
+              <img
+                src="/araudhah_logo.jpg"
+                alt="Masjid Ar-Raudhah Logo"
+                className="w-10 h-10 rounded-lg object-contain"
+              />
             </div>
             <div>
               <h1 className="text-lg font-heading font-semibold text-foreground">Skim Pintar</h1>
@@ -115,7 +151,14 @@ const Dashboard = () => {
             </Button>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" onClick={() => navigate("/settings")} aria-label={t("nav.settings")} title={t("nav.settings")} className="h-10 w-10 rounded-full border-border bg-card text-foreground shadow-card hover:bg-secondary">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => navigate("/settings")}
+              aria-label={t("nav.settings")}
+              title={t("nav.settings")}
+              className="h-10 w-10 rounded-full border-border bg-card text-foreground shadow-card hover:bg-secondary"
+            >
               <Settings className="w-5 h-5" />
             </Button>
             <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground">
@@ -133,8 +176,16 @@ const Dashboard = () => {
           <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
-          <button onClick={() => navigate("/apply")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10"
+        >
+          <button
+            onClick={() => navigate("/apply")}
+            className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border"
+          >
             <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center mb-4">
               <FileText className="w-5 h-5 text-primary-foreground" />
             </div>
@@ -143,7 +194,10 @@ const Dashboard = () => {
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          <button onClick={() => navigate("/payment")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
+          <button
+            onClick={() => navigate("/payment")}
+            className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border"
+          >
             <div className="w-12 h-12 rounded-xl gradient-gold flex items-center justify-center mb-4">
               <CreditCard className="w-5 h-5 text-primary" />
             </div>
@@ -152,7 +206,10 @@ const Dashboard = () => {
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          <button onClick={() => navigate("/status")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
+          <button
+            onClick={() => navigate("/status")}
+            className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border"
+          >
             <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mb-4">
               <Clock className="w-5 h-5 text-foreground" />
             </div>
@@ -161,7 +218,10 @@ const Dashboard = () => {
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          <button onClick={() => navigate("/transactions")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
+          <button
+            onClick={() => navigate("/transactions")}
+            className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border"
+          >
             <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
               <Receipt className="w-5 h-5 text-accent-foreground" />
             </div>
@@ -182,7 +242,10 @@ const Dashboard = () => {
           ) : (
             <div className="space-y-3">
               {applications.map((app) => (
-                <div key={app.id} className="bg-card rounded-xl border p-5 shadow-card flex items-center justify-between">
+                <div
+                  key={app.id}
+                  className="bg-card rounded-xl border p-5 shadow-card flex items-center justify-between"
+                >
                   <div>
                     <p className="font-semibold text-foreground font-body">{app.full_name}</p>
                     <p className="text-sm text-muted-foreground">
@@ -192,7 +255,9 @@ const Dashboard = () => {
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs font-semibold px-3 py-1.5 rounded-full capitalize ${getStatusColor(app.status)}`}>
+                    <span
+                      className={`text-xs font-semibold px-3 py-1.5 rounded-full capitalize ${getStatusColor(app.status)}`}
+                    >
                       {app.status}
                     </span>
                     {app.status === "pending" && (
@@ -201,7 +266,10 @@ const Dashboard = () => {
                         size="icon"
                         className="text-destructive hover:text-destructive hover:bg-destructive/10"
                         title={t("dashboard.cancelApplication")}
-                        onClick={() => { setCancellingAppId(app.id); setCancelDialogOpen(true); }}
+                        onClick={() => {
+                          setCancellingAppId(app.id);
+                          setCancelDialogOpen(true);
+                        }}
                       >
                         <XCircle className="w-4 h-4" />
                       </Button>
@@ -213,15 +281,26 @@ const Dashboard = () => {
           )}
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-10 bg-card rounded-xl border p-6 shadow-card">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-10 bg-card rounded-xl border p-6 shadow-card"
+        >
           <h3 className="text-lg font-heading font-semibold text-foreground mb-4">{t("dashboard.aboutSkimPintar")}</h3>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground">
             <div>
-              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintar")} — $5-$15/{t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}</h4>
+              <h4 className="font-semibold text-foreground mb-2 font-body">
+                {t("plan.pintar")} — $5-$15/
+                {t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}
+              </h4>
               <p>{t("plan.pintarDesc")}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintarPlus")} — $20+/{t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}</h4>
+              <h4 className="font-semibold text-foreground mb-2 font-body">
+                {t("plan.pintarPlus")} — $20+/
+                {t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}
+              </h4>
               <p>{t("plan.pintarPlusDesc")}</p>
             </div>
           </div>
@@ -229,12 +308,18 @@ const Dashboard = () => {
             <div>
               <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.benefits")}</h4>
               <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                <li>Bathing, shrouding, prayer, burial</li>
-                <li>Undertaker (Jurumandi)</li>
-                <li>Bathing and shrouding kits</li>
-                <li>Nisan, name plate, carpet grass</li>
-                <li>40-seater bus to cemetery (2 way)</li>
-                <li>20% off courses at Ar-Raudhah Mosque</li>
+                <li>
+                  <strong>Individual Coverage</strong>
+                </li>
+                <li>Complimentary Funeral Services</li>
+                <ul className="ml-6 list-disc">
+                  <li>Bathing, shrouding, prayer, burial</li>
+                  <li>Undertaker (Jurumandi)</li>
+                  <li>Bathing and shrouding kits (Soap, camphor, perfume, kain kafan)</li>
+                  <li>Nisan, name plate, carpet grass</li>
+                  <li>40-seater bus to cemetery (2 way)</li>
+                </ul>
+                <li>20% off courses organised Ar-Raudhah Mosque</li>
               </ul>
             </div>
             <div>
