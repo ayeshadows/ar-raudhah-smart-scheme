@@ -143,6 +143,21 @@ const Index = () => {
           © {new Date().getFullYear()} Masjid Ar-Raudhah. All rights reserved.
         </p>
       </footer>
+
+      {/* About Us Dialog */}
+      <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-heading">What is Skim Pintar?</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground pt-3 leading-relaxed">
+              It is a scheme to facilitate our jemaah to make monthly donation to the mosque through GIRO. Donors who donate $5.00/month (Pintar) will get free funeral services for himself in the event of his death while donors who donate more than $20.00/month (Pintar Plus) will get <strong>complimentary funeral services for the immediate family living under one address</strong> in the event of any death in the family.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogClose asChild>
+            <Button variant="outline" className="mt-2">Close</Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
     </div>);
 
 };
