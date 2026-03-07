@@ -35,10 +35,10 @@ const Index = () => {
               className="w-10 h-10 rounded-lg object-contain" />
             
             <div>
-              <span className="font-heading font-semibold text-primary-foreground block leading-tight">
+             <span className="font-heading font-semibold text-foreground block leading-tight">
                 Masjid Ar-Raudhah
               </span>
-              <span className="text-xs text-primary-foreground/70">
+              <span className="text-xs text-muted-foreground">
                 Skim Pintar Portal
               </span>
             </div>
