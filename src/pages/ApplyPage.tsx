@@ -16,9 +16,7 @@ const MOCK_MYINFO = {
   date_of_birth: "1990-03-15",
   address: "Blk 123 Bishan Street 12, #08-456, Singapore 570123",
   phone: "91234567",
-  email: "ahmad.abdullah@email.com",
-  family_same_household: "",
-  family_diff_household: ""
+  email: "ahmad.abdullah@email.com"
 };
 
 const ApplyPage = () => {
