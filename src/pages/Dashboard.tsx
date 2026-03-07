@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { LogOut, FileText, CreditCard, Clock, ChevronRight } from "lucide-react";
+import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings } from "lucide-react";
 import { toast } from "sonner";
 
 type Application = {
