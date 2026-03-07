@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion } from "framer-motion";
-import { ArrowLeft, Shield, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Shield, CheckCircle2, Plus, X } from "lucide-react";
 import { toast } from "sonner";
 import { useSettings } from "@/contexts/SettingsContext";
 
@@ -29,9 +29,10 @@ const ApplyPage = () => {
   const [donationAmount, setDonationAmount] = useState("");
   const [donationError, setDonationError] = useState("");
   const [formData, setFormData] = useState({
-    full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: "",
-    family_same_household: "", family_diff_household: ""
+    full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: ""
   });
+  const [familySame, setFamilySame] = useState<string[]>([""]);
+  const [familyDiff, setFamilyDiff] = useState<string[]>([""]);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -206,23 +207,47 @@ const ApplyPage = () => {
                 <Label className="text-sm font-medium">{t("apply.address")}</Label>
                 <Input value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} required className="h-12 rounded-lg" />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label className="text-sm font-medium">{t("apply.familySameHousehold")}</Label>
-                <textarea
-                  value={formData.family_same_household}
-                  onChange={(e) => setFormData({ ...formData, family_same_household: e.target.value })}
-                  placeholder={t("apply.familySameHouseholdHint")}
-                  className="flex w-full rounded-lg border border-input bg-background px-3 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm min-h-[80px]"
-                />
+                {familySame.map((name, i) => (
+                  <div key={i} className="flex gap-2">
+                    <Input
+                      value={name}
+                      onChange={(e) => { const arr = [...familySame]; arr[i] = e.target.value; setFamilySame(arr); }}
+                      placeholder={t("apply.familySameHouseholdHint")}
+                      className="h-12 rounded-lg"
+                    />
+                    {familySame.length > 1 && (
+                      <Button type="button" variant="ghost" size="icon" onClick={() => setFamilySame(familySame.filter((_, j) => j !== i))} className="h-12 w-12 shrink-0 text-muted-foreground hover:text-destructive">
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button type="button" variant="outline" size="sm" onClick={() => setFamilySame([...familySame, ""])} className="gap-1.5">
+                  <Plus className="w-4 h-4" /> {t("apply.addMember")}
+                </Button>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label className="text-sm font-medium">{t("apply.familyDiffHousehold")}</Label>
-                <textarea
-                  value={formData.family_diff_household}
-                  onChange={(e) => setFormData({ ...formData, family_diff_household: e.target.value })}
-                  placeholder={t("apply.familyDiffHouseholdHint")}
-                  className="flex w-full rounded-lg border border-input bg-background px-3 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm min-h-[80px]"
-                />
+                {familyDiff.map((name, i) => (
+                  <div key={i} className="flex gap-2">
+                    <Input
+                      value={name}
+                      onChange={(e) => { const arr = [...familyDiff]; arr[i] = e.target.value; setFamilyDiff(arr); }}
+                      placeholder={t("apply.familyDiffHouseholdHint")}
+                      className="h-12 rounded-lg"
+                    />
+                    {familyDiff.length > 1 && (
+                      <Button type="button" variant="ghost" size="icon" onClick={() => setFamilyDiff(familyDiff.filter((_, j) => j !== i))} className="h-12 w-12 shrink-0 text-muted-foreground hover:text-destructive">
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button type="button" variant="outline" size="sm" onClick={() => setFamilyDiff([...familyDiff, ""])} className="gap-1.5">
+                  <Plus className="w-4 h-4" /> {t("apply.addMember")}
+                </Button>
               </div>
               <div className="space-y-2">
                 <Label className="text-sm font-medium">{t("apply.donationAmount")}</Label>
