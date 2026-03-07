@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle, Mail, Receipt, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { useSettings } from "@/contexts/SettingsContext";
 
 type Application = {
   id: string;
@@ -18,6 +19,7 @@ type Application = {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { t } = useSettings();
   const [user, setUser] = useState<any>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
@@ -105,18 +107,18 @@ const Dashboard = () => {
               <p className="text-xs text-muted-foreground">Masjid Ar-Raudhah</p>
             </div>
             <Button variant="ghost" size="sm" onClick={() => navigate("/faq")} className="text-muted-foreground">
-              <HelpCircle className="w-4 h-4 mr-1" /> FAQ
+              <HelpCircle className="w-4 h-4 mr-1" /> {t("nav.faq")}
             </Button>
             <Button variant="ghost" size="sm" onClick={() => navigate("/contact")} className="text-muted-foreground">
-              <Mail className="w-4 h-4 mr-1" /> Contact Us
+              <Mail className="w-4 h-4 mr-1" /> {t("nav.contactUs")}
             </Button>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" onClick={() => navigate("/settings")} aria-label="Open settings" title="Settings" className="h-10 w-10 rounded-full border-border bg-card text-foreground shadow-card hover:bg-secondary">
+            <Button variant="outline" size="icon" onClick={() => navigate("/settings")} aria-label={t("nav.settings")} title={t("nav.settings")} className="h-10 w-10 rounded-full border-border bg-card text-foreground shadow-card hover:bg-secondary">
               <Settings className="w-5 h-5" />
             </Button>
             <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground">
-              <LogOut className="w-4 h-4 mr-2" /> Logout
+              <LogOut className="w-4 h-4 mr-2" /> {t("nav.logout")}
             </Button>
           </div>
         </div>
@@ -125,19 +127,18 @@ const Dashboard = () => {
       <main className="container max-w-5xl mx-auto px-6 py-10">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
           <h2 className="text-3xl font-heading font-bold text-foreground mb-2">
-            Assalamualaikum, {user?.user_metadata?.full_name || "Member"}
+            {t("dashboard.welcome")}, {user?.user_metadata?.full_name || "Member"}
           </h2>
-          <p className="text-muted-foreground">Manage your Skim Pintar membership and applications.</p>
+          <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
         </motion.div>
 
-        {/* Quick Actions */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
           <button onClick={() => navigate("/apply")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
             <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center mb-4">
               <FileText className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-foreground mb-1 font-body">New Application</h3>
-            <p className="text-sm text-muted-foreground">Apply via Singpass</p>
+            <h3 className="font-semibold text-foreground mb-1 font-body">{t("nav.newApplication")}</h3>
+            <p className="text-sm text-muted-foreground">{t("dashboard.applyViaSingpass")}</p>
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
 
@@ -145,8 +146,8 @@ const Dashboard = () => {
             <div className="w-12 h-12 rounded-xl gradient-gold flex items-center justify-center mb-4">
               <CreditCard className="w-5 h-5 text-primary" />
             </div>
-            <h3 className="font-semibold text-foreground mb-1 font-body">Payment Setup</h3>
-            <p className="text-sm text-muted-foreground">Set up card deductions</p>
+            <h3 className="font-semibold text-foreground mb-1 font-body">{t("nav.paymentSetup")}</h3>
+            <p className="text-sm text-muted-foreground">{t("dashboard.setUpCard")}</p>
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
 
@@ -154,8 +155,8 @@ const Dashboard = () => {
             <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mb-4">
               <Clock className="w-5 h-5 text-foreground" />
             </div>
-            <h3 className="font-semibold text-foreground mb-1 font-body">Track Status</h3>
-            <p className="text-sm text-muted-foreground">View application status</p>
+            <h3 className="font-semibold text-foreground mb-1 font-body">{t("nav.trackStatus")}</h3>
+            <p className="text-sm text-muted-foreground">{t("dashboard.viewStatus")}</p>
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
 
@@ -163,20 +164,19 @@ const Dashboard = () => {
             <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
               <Receipt className="w-5 h-5 text-accent-foreground" />
             </div>
-            <h3 className="font-semibold text-foreground mb-1 font-body">Transactions</h3>
-            <p className="text-sm text-muted-foreground">View payment history</p>
+            <h3 className="font-semibold text-foreground mb-1 font-body">{t("nav.transactions")}</h3>
+            <p className="text-sm text-muted-foreground">{t("dashboard.viewPayments")}</p>
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
 
-        {/* Applications */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <h3 className="text-xl font-heading font-semibold text-foreground mb-4">Your Applications</h3>
+          <h3 className="text-xl font-heading font-semibold text-foreground mb-4">{t("dashboard.yourApplications")}</h3>
           {applications.length === 0 ? (
             <div className="bg-card rounded-xl border p-10 text-center shadow-card">
               <FileText className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground mb-4">No applications yet</p>
-              <Button onClick={() => navigate("/apply")}>Apply Now</Button>
+              <p className="text-muted-foreground mb-4">{t("dashboard.noApplications")}</p>
+              <Button onClick={() => navigate("/apply")}>{t("dashboard.applyNow")}</Button>
             </div>
           ) : (
             <div className="space-y-3">
@@ -185,7 +185,7 @@ const Dashboard = () => {
                   <div>
                     <p className="font-semibold text-foreground font-body">{app.full_name}</p>
                     <p className="text-sm text-muted-foreground">
-                      {app.plan === "pintar" ? "Pintar ($5/month)" : "Pintar Plus ($20/month)"}
+                      {app.plan === "pintar" ? t("plan.pintarPrice") : t("plan.pintarPlusPrice")}
                       {" · "}
                       {new Date(app.created_at).toLocaleDateString()}
                     </p>
@@ -199,7 +199,7 @@ const Dashboard = () => {
                         variant="ghost"
                         size="icon"
                         className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                        title="Cancel application"
+                        title={t("dashboard.cancelApplication")}
                         onClick={() => { setCancellingAppId(app.id); setCancelDialogOpen(true); }}
                       >
                         <XCircle className="w-4 h-4" />
@@ -212,21 +212,20 @@ const Dashboard = () => {
           )}
         </motion.div>
 
-        {/* Info Section */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-10 bg-card rounded-xl border p-6 shadow-card">
-          <h3 className="text-lg font-heading font-semibold text-foreground mb-4">About Skim Pintar</h3>
+          <h3 className="text-lg font-heading font-semibold text-foreground mb-4">{t("dashboard.aboutSkimPintar")}</h3>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground">
             <div>
-              <h4 className="font-semibold text-foreground mb-2 font-body">Pintar — $5/month</h4>
-              <p>Free funeral services for the donor in the event of death.</p>
+              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintar")} — $5/{t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}</h4>
+              <p>{t("plan.pintarDesc")}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-2 font-body">Pintar Plus — $20/month</h4>
-              <p>Complimentary funeral services for the donor and immediate family living under one address.</p>
+              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintarPlus")} — $20/{t("font.medium") === "Medium" ? "month" : t("font.medium") === "Sederhana" ? "bulan" : "月"}</h4>
+              <p>{t("plan.pintarPlusDesc")}</p>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t">
-            <h4 className="font-semibold text-foreground mb-2 text-sm font-body">Benefits include:</h4>
+            <h4 className="font-semibold text-foreground mb-2 text-sm font-body">{t("plan.benefits")}</h4>
             <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
               <li>Bathing, shrouding, prayer, burial</li>
               <li>Undertaker (Jurumandi)</li>
@@ -239,21 +238,18 @@ const Dashboard = () => {
         </motion.div>
       </main>
 
-      {/* Cancel Confirmation Dialog */}
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Cancel Application</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to cancel this application? This action cannot be undone. The cancelled application will remain in your records.
-            </DialogDescription>
+            <DialogTitle>{t("dashboard.cancelApplication")}</DialogTitle>
+            <DialogDescription>{t("dashboard.cancelConfirm")}</DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Keep Application</Button>
+              <Button variant="outline">{t("dashboard.keepApplication")}</Button>
             </DialogClose>
             <Button variant="destructive" onClick={handleCancelApplication} disabled={cancelling}>
-              {cancelling ? "Cancelling..." : "Yes, Cancel"}
+              {cancelling ? t("dashboard.cancelling") : t("dashboard.yesCancel")}
             </Button>
           </DialogFooter>
         </DialogContent>
