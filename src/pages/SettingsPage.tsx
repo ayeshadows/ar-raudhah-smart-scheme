@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
-import { ArrowLeft, Moon, Sun, Type, Globe, Bell, Eye } from "lucide-react";
+import { ArrowLeft, Moon, Sun, Type, Globe, Bell, Eye, Trash2 } from "lucide-react";
 import { useSettings, type Language, type FontSize } from "@/contexts/SettingsContext";
 import { toast } from "sonner";
+import { useState } from "react";
 
 const LANGUAGES: { value: Language; label: string; native: string }[] = [
   { value: "en", label: "English", native: "English" },
@@ -24,15 +27,31 @@ const FONT_SIZES: { value: FontSize; label: string }[] = [
 const SettingsPage = () => {
   const navigate = useNavigate();
   const { settings, updateSettings, t } = useSettings();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const handleToggle = (key: "darkMode" | "notifications" | "highContrast") => {
     updateSettings({ [key]: !settings[key] });
     toast.success(t("settings.saved"));
   };
 
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    try {
+      // Sign out and inform the user
+      await supabase.auth.signOut();
+      toast.success("Your account has been scheduled for deletion. You have been logged out.");
+      navigate("/");
+    } catch (error: any) {
+      toast.error("Failed to process account deletion request.");
+    } finally {
+      setDeleting(false);
+      setDeleteDialogOpen(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b bg-card shadow-card">
         <div className="container max-w-5xl mx-auto flex items-center gap-4 py-4 px-6">
           <Button variant="ghost" size="icon" onClick={() => navigate("/dashboard")}>
@@ -47,18 +66,12 @@ const SettingsPage = () => {
 
       <main className="container max-w-3xl mx-auto px-6 py-10 space-y-6">
         {/* Appearance Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-card rounded-xl border p-6 shadow-card"
-        >
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-card rounded-xl border p-6 shadow-card">
           <h2 className="text-lg font-heading font-semibold text-foreground mb-6 flex items-center gap-2">
             {settings.darkMode ? <Moon className="w-5 h-5 text-accent" /> : <Sun className="w-5 h-5 text-accent" />}
             {t("settings.appearance")}
           </h2>
-
           <div className="space-y-6">
-            {/* Dark Mode */}
             <div className="flex items-center justify-between">
               <div>
                 <Label className="text-sm font-semibold text-foreground">{t("settings.darkMode")}</Label>
@@ -66,8 +79,6 @@ const SettingsPage = () => {
               </div>
               <Switch checked={settings.darkMode} onCheckedChange={() => handleToggle("darkMode")} />
             </div>
-
-            {/* Font Size */}
             <div className="flex items-center justify-between">
               <div>
                 <Label className="text-sm font-semibold text-foreground flex items-center gap-2">
@@ -80,10 +91,7 @@ const SettingsPage = () => {
                 {FONT_SIZES.map((size) => (
                   <button
                     key={size.value}
-                    onClick={() => {
-                      updateSettings({ fontSize: size.value });
-                      toast.success(t("settings.saved"));
-                    }}
+                    onClick={() => { updateSettings({ fontSize: size.value }); toast.success(t("settings.saved")); }}
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                       settings.fontSize === size.value
                         ? "bg-primary text-primary-foreground"
@@ -95,8 +103,6 @@ const SettingsPage = () => {
                 ))}
               </div>
             </div>
-
-            {/* High Contrast */}
             <div className="flex items-center justify-between">
               <div>
                 <Label className="text-sm font-semibold text-foreground flex items-center gap-2">
@@ -111,27 +117,15 @@ const SettingsPage = () => {
         </motion.div>
 
         {/* Language Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-card rounded-xl border p-6 shadow-card"
-        >
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card rounded-xl border p-6 shadow-card">
           <h2 className="text-lg font-heading font-semibold text-foreground mb-6 flex items-center gap-2">
             <Globe className="w-5 h-5 text-accent" />
             {t("settings.language")}
           </h2>
-
           <div>
             <Label className="text-sm font-semibold text-foreground">{t("settings.languageLabel")}</Label>
             <p className="text-xs text-muted-foreground mt-0.5 mb-3">{t("settings.languageDesc")}</p>
-            <Select
-              value={settings.language}
-              onValueChange={(value: Language) => {
-                updateSettings({ language: value });
-                toast.success(t("settings.saved"));
-              }}
-            >
+            <Select value={settings.language} onValueChange={(value: Language) => { updateSettings({ language: value }); toast.success(t("settings.saved")); }}>
               <SelectTrigger className="w-full max-w-xs">
                 <SelectValue />
               </SelectTrigger>
@@ -140,9 +134,7 @@ const SettingsPage = () => {
                   <SelectItem key={lang.value} value={lang.value}>
                     <span className="flex items-center gap-2">
                       {lang.native}
-                      {lang.native !== lang.label && (
-                        <span className="text-muted-foreground text-xs">({lang.label})</span>
-                      )}
+                      {lang.native !== lang.label && <span className="text-muted-foreground text-xs">({lang.label})</span>}
                     </span>
                   </SelectItem>
                 ))}
@@ -152,17 +144,11 @@ const SettingsPage = () => {
         </motion.div>
 
         {/* Notifications Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-card rounded-xl border p-6 shadow-card"
-        >
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-card rounded-xl border p-6 shadow-card">
           <h2 className="text-lg font-heading font-semibold text-foreground mb-6 flex items-center gap-2">
             <Bell className="w-5 h-5 text-accent" />
             {t("settings.notifications")}
           </h2>
-
           <div className="flex items-center justify-between">
             <div>
               <Label className="text-sm font-semibold text-foreground">{t("settings.notificationsLabel")}</Label>
@@ -171,7 +157,41 @@ const SettingsPage = () => {
             <Switch checked={settings.notifications} onCheckedChange={() => handleToggle("notifications")} />
           </div>
         </motion.div>
+
+        {/* Danger Zone */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-card rounded-xl border border-destructive/30 p-6 shadow-card">
+          <h2 className="text-lg font-heading font-semibold text-destructive mb-4 flex items-center gap-2">
+            <Trash2 className="w-5 h-5" />
+            Danger Zone
+          </h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            Permanently delete your account and all associated data. This action cannot be undone.
+          </p>
+          <Button variant="destructive" onClick={() => setDeleteDialogOpen(true)}>
+            <Trash2 className="w-4 h-4 mr-2" />
+            Delete My Account
+          </Button>
+        </motion.div>
       </main>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Account</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete your account? All your applications, transaction records, and personal data will be permanently removed. This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button variant="destructive" onClick={handleDeleteAccount} disabled={deleting}>
+              {deleting ? "Deleting..." : "Yes, Delete My Account"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
