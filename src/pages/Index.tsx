@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Shield, HelpCircle, Mail } from "lucide-react";
+import { Shield, HelpCircle, Mail, Settings, Info } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 
 const Index = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -45,9 +47,16 @@ const Index = () => {
             <Button
               variant="ghost"
               size="sm"
+              onClick={() => setAboutOpen(true)}
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
+              <Info className="w-4 h-4 mr-1" />
+              About Us
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => navigate("/faq")}
               className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
-              
               <HelpCircle className="w-4 h-4 mr-1" />
               FAQ
             </Button>
@@ -56,9 +65,16 @@ const Index = () => {
               size="sm"
               onClick={() => navigate("/contact")}
               className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
-              
               <Mail className="w-4 h-4 mr-1" />
               Contact Us
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/settings")}
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
+              <Settings className="w-4 h-4 mr-1" />
+              Settings
             </Button>
           </div>
         </div>
@@ -98,9 +114,6 @@ const Index = () => {
             Log in with Singpass
           </Button>
 
-          <p className="text-xs text-muted-foreground mb-8">
-            This is a simulated Singpass login for demonstration purposes.
-          </p>
 
           {/* Plan Cards */}
           <div className="space-y-3 text-left">
@@ -130,6 +143,21 @@ const Index = () => {
           © {new Date().getFullYear()} Masjid Ar-Raudhah. All rights reserved.
         </p>
       </footer>
+
+      {/* About Us Dialog */}
+      <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-heading">What is Skim Pintar?</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground pt-3 leading-relaxed">
+              It is a scheme to facilitate our jemaah to make monthly donation to the mosque through GIRO. Donors who donate $5.00/month (Pintar) will get free funeral services for himself in the event of his death while donors who donate more than $20.00/month (Pintar Plus) will get <strong>complimentary funeral services for the immediate family living under one address</strong> in the event of any death in the family.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogClose asChild>
+            <Button variant="outline" className="mt-2">Close</Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
     </div>);
 
 };
