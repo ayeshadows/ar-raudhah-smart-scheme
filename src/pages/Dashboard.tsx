@@ -81,10 +81,15 @@ const Dashboard = () => {
               <p className="text-xs text-muted-foreground">Masjid Ar-Raudhah</p>
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground">
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" onClick={() => navigate("/settings")} className="text-muted-foreground">
+              <Settings className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground">
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 
