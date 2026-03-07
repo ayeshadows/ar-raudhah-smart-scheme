@@ -16,6 +16,7 @@ import {
   XCircle,
 } from "lucide-react";
 import CoursesSection from "@/components/CoursesSection";
+import HasanatProgressBar from "@/components/HasanatProgressBar";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -175,6 +176,8 @@ const Dashboard = () => {
           </h2>
           <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
         </motion.div>
+
+        {user && <HasanatProgressBar userId={user.id} />}
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
