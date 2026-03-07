@@ -11,6 +11,7 @@ import ApplyPage from "./pages/ApplyPage";
 import PaymentPage from "./pages/PaymentPage";
 import StatusPage from "./pages/StatusPage";
 import SettingsPage from "./pages/SettingsPage";
+import FAQPage from "./pages/FAQPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/payment" element={<PaymentPage />} />
             <Route path="/status" element={<StatusPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/faq" element={<FAQPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
