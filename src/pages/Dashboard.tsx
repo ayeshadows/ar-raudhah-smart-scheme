@@ -3,8 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle, Mail } from "lucide-react";
+import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle, Mail, Receipt, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 
 type Application = {
   id: string;
@@ -12,6 +13,7 @@ type Application = {
   status: string;
   created_at: string;
   full_name: string;
+  cancelled_at: string | null;
 };
 
 const Dashboard = () => {
@@ -19,28 +21,29 @@ const Dashboard = () => {
   const [user, setUser] = useState<any>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [cancellingAppId, setCancellingAppId] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState(false);
+
+  const fetchApplications = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("applications")
+      .select("id, plan, status, created_at, full_name, cancelled_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    if (!error && data) setApplications(data);
+  };
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!session) {
-        navigate("/auth");
-        return;
-      }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!session) { navigate("/auth"); return; }
       setUser(session.user);
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        navigate("/auth");
-        return;
-      }
+      if (!session) { navigate("/auth"); return; }
       setUser(session.user);
-      // Load applications from localStorage (simulated)
-      const stored = localStorage.getItem(`skim_pintar_apps_${session.user.id}`);
-      if (stored) setApplications(JSON.parse(stored));
-      setLoading(false);
+      fetchApplications(session.user.id).finally(() => setLoading(false));
     });
 
     return () => subscription.unsubscribe();
@@ -52,16 +55,32 @@ const Dashboard = () => {
     navigate("/auth");
   };
 
+  const handleCancelApplication = async () => {
+    if (!cancellingAppId) return;
+    setCancelling(true);
+    const { error } = await supabase
+      .from("applications")
+      .update({ status: "cancelled", cancelled_at: new Date().toISOString() })
+      .eq("id", cancellingAppId);
+
+    if (error) {
+      toast.error("Failed to cancel application");
+    } else {
+      toast.success("Application cancelled successfully");
+      if (user) await fetchApplications(user.id);
+    }
+    setCancelling(false);
+    setCancelDialogOpen(false);
+    setCancellingAppId(null);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "approved":
-        return "bg-primary/10 text-primary";
-      case "pending":
-        return "bg-accent/20 text-accent-foreground";
-      case "rejected":
-        return "bg-destructive/10 text-destructive";
-      default:
-        return "bg-muted text-muted-foreground";
+      case "approved": return "bg-primary/10 text-primary";
+      case "pending": return "bg-accent/20 text-accent-foreground";
+      case "rejected": return "bg-destructive/10 text-destructive";
+      case "cancelled": return "bg-muted text-muted-foreground";
+      default: return "bg-muted text-muted-foreground";
     }
   };
 
@@ -75,51 +94,35 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b bg-card shadow-card">
         <div className="container max-w-5xl mx-auto flex items-center justify-between py-4 px-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
-              <img
-                src="/araudhah_logo.jpg"
-                alt="Masjid Ar-Raudhah Logo"
-                className="w-10 h-10 rounded-lg object-contain"
-              />
+              <img src="/araudhah_logo.jpg" alt="Masjid Ar-Raudhah Logo" className="w-10 h-10 rounded-lg object-contain" />
             </div>
             <div>
               <h1 className="text-lg font-heading font-semibold text-foreground">Skim Pintar</h1>
               <p className="text-xs text-muted-foreground">Masjid Ar-Raudhah</p>
             </div>
             <Button variant="ghost" size="sm" onClick={() => navigate("/faq")} className="text-muted-foreground">
-              <HelpCircle className="w-4 h-4 mr-1" />
-              FAQ
+              <HelpCircle className="w-4 h-4 mr-1" /> FAQ
             </Button>
             <Button variant="ghost" size="sm" onClick={() => navigate("/contact")} className="text-muted-foreground">
-              <Mail className="w-4 h-4 mr-1" />
-              Contact Us
+              <Mail className="w-4 h-4 mr-1" /> Contact Us
             </Button>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => navigate("/settings")}
-              aria-label="Open settings"
-              title="Settings"
-              className="h-10 w-10 rounded-full border-border bg-card text-foreground shadow-card hover:bg-secondary"
-            >
+            <Button variant="outline" size="icon" onClick={() => navigate("/settings")} aria-label="Open settings" title="Settings" className="h-10 w-10 rounded-full border-border bg-card text-foreground shadow-card hover:bg-secondary">
               <Settings className="w-5 h-5" />
             </Button>
             <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground">
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
+              <LogOut className="w-4 h-4 mr-2" /> Logout
             </Button>
           </div>
         </div>
       </header>
 
       <main className="container max-w-5xl mx-auto px-6 py-10">
-        {/* Welcome */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
           <h2 className="text-3xl font-heading font-bold text-foreground mb-2">
             Assalamualaikum, {user?.user_metadata?.full_name || "Member"}
@@ -128,16 +131,8 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Quick Actions */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10"
-        >
-          <button
-            onClick={() => navigate("/apply")}
-            className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border"
-          >
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+          <button onClick={() => navigate("/apply")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
             <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center mb-4">
               <FileText className="w-5 h-5 text-primary-foreground" />
             </div>
@@ -146,10 +141,7 @@ const Dashboard = () => {
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          <button
-            onClick={() => navigate("/payment")}
-            className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border"
-          >
+          <button onClick={() => navigate("/payment")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
             <div className="w-12 h-12 rounded-xl gradient-gold flex items-center justify-center mb-4">
               <CreditCard className="w-5 h-5 text-primary" />
             </div>
@@ -158,15 +150,21 @@ const Dashboard = () => {
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
 
-          <button
-            onClick={() => navigate("/status")}
-            className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border"
-          >
+          <button onClick={() => navigate("/status")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
             <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mb-4">
               <Clock className="w-5 h-5 text-foreground" />
             </div>
             <h3 className="font-semibold text-foreground mb-1 font-body">Track Status</h3>
             <p className="text-sm text-muted-foreground">View application status</p>
+            <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          <button onClick={() => navigate("/transactions")} className="group bg-card rounded-xl p-6 shadow-card hover:shadow-elevated transition-all text-left border">
+            <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4">
+              <Receipt className="w-5 h-5 text-accent-foreground" />
+            </div>
+            <h3 className="font-semibold text-foreground mb-1 font-body">Transactions</h3>
+            <p className="text-sm text-muted-foreground">View payment history</p>
             <ChevronRight className="w-4 h-4 text-muted-foreground mt-3 group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
@@ -183,10 +181,7 @@ const Dashboard = () => {
           ) : (
             <div className="space-y-3">
               {applications.map((app) => (
-                <div
-                  key={app.id}
-                  className="bg-card rounded-xl border p-5 shadow-card flex items-center justify-between"
-                >
+                <div key={app.id} className="bg-card rounded-xl border p-5 shadow-card flex items-center justify-between">
                   <div>
                     <p className="font-semibold text-foreground font-body">{app.full_name}</p>
                     <p className="text-sm text-muted-foreground">
@@ -195,11 +190,22 @@ const Dashboard = () => {
                       {new Date(app.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <span
-                    className={`text-xs font-semibold px-3 py-1.5 rounded-full capitalize ${getStatusColor(app.status)}`}
-                  >
-                    {app.status}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-semibold px-3 py-1.5 rounded-full capitalize ${getStatusColor(app.status)}`}>
+                      {app.status}
+                    </span>
+                    {app.status === "pending" && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                        title="Cancel application"
+                        onClick={() => { setCancellingAppId(app.id); setCancelDialogOpen(true); }}
+                      >
+                        <XCircle className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -207,12 +213,7 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Info Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mt-10 bg-card rounded-xl border p-6 shadow-card"
-        >
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-10 bg-card rounded-xl border p-6 shadow-card">
           <h3 className="text-lg font-heading font-semibold text-foreground mb-4">About Skim Pintar</h3>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground">
             <div>
@@ -237,6 +238,26 @@ const Dashboard = () => {
           </div>
         </motion.div>
       </main>
+
+      {/* Cancel Confirmation Dialog */}
+      <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cancel Application</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to cancel this application? This action cannot be undone. The cancelled application will remain in your records.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Keep Application</Button>
+            </DialogClose>
+            <Button variant="destructive" onClick={handleCancelApplication} disabled={cancelling}>
+              {cancelling ? "Cancelling..." : "Yes, Cancel"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
