@@ -150,7 +150,6 @@ const AuthPage = () => {
             </button>
           </p>
         </motion.div>
-      </div>
     </div>
   );
 };
