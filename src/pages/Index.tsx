@@ -23,15 +23,15 @@ const Index = () => {
           <div className="flex items-center justify-between mb-16">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
-                <span className="text-sm font-heading font-bold text-primary">AR</span>
+                
               </div>
               <span className="text-primary-foreground font-heading font-semibold">Masjid Ar-Raudhah</span>
             </div>
             <Button
               variant="outline"
               onClick={() => navigate(isLoggedIn ? "/dashboard" : "/auth")}
-              className="border-primary-foreground/20 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground"
-            >
+              className="border-primary-foreground/20 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground">
+              
               {isLoggedIn ? "Dashboard" : "Sign In"}
             </Button>
           </div>
@@ -40,13 +40,13 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl pb-16"
-          >
+            className="max-w-2xl pb-16">
+            
             <div className="inline-flex items-center gap-2 bg-accent/20 rounded-full px-4 py-1.5 mb-6">
               <Star className="w-3.5 h-3.5 text-accent" />
               <span className="text-xs font-semibold text-accent">Now Digital — No More GIRO Forms</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-heading font-bold text-primary-foreground mb-5 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-heading font-bold mb-5 leading-tight text-sidebar-border">
               Skim Pintar
             </h1>
             <p className="text-lg text-primary-foreground/80 mb-8 max-w-lg">
@@ -55,8 +55,8 @@ const Index = () => {
             <div className="flex flex-wrap gap-3">
               <Button
                 onClick={() => navigate(isLoggedIn ? "/apply" : "/auth")}
-                className="h-12 px-8 rounded-lg text-base font-semibold gradient-gold text-primary hover:opacity-90"
-              >
+                className="h-12 px-8 rounded-lg text-base font-semibold gradient-gold text-primary hover:opacity-90">
+                
                 Apply Now
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -65,8 +65,8 @@ const Index = () => {
                 onClick={() => {
                   document.getElementById("benefits")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="h-12 px-8 rounded-lg text-base border-primary-foreground/20 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground"
-              >
+                className="h-12 px-8 rounded-lg text-base border-primary-foreground/20 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground">
+                
                 Learn More
               </Button>
             </div>
@@ -79,43 +79,43 @@ const Index = () => {
         <div className="container max-w-5xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              {
-                icon: <Shield className="w-6 h-6" />,
-                title: "Singpass Registration",
-                desc: "Register instantly with MyInfo — no more paper forms.",
-                gradient: "gradient-primary",
-                iconColor: "text-primary-foreground",
-              },
-              {
-                icon: <CreditCard className="w-6 h-6" />,
-                title: "Card Payments",
-                desc: "Recurring debit/credit card deductions replace GIRO.",
-                gradient: "gradient-gold",
-                iconColor: "text-primary",
-              },
-              {
-                icon: <Clock className="w-6 h-6" />,
-                title: "Track Status",
-                desc: "Monitor your application and payment status online.",
-                gradient: "bg-secondary",
-                iconColor: "text-foreground",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-card rounded-xl border p-6 shadow-card"
-              >
+            {
+              icon: <Shield className="w-6 h-6" />,
+              title: "Singpass Registration",
+              desc: "Register instantly with MyInfo — no more paper forms.",
+              gradient: "gradient-primary",
+              iconColor: "text-primary-foreground"
+            },
+            {
+              icon: <CreditCard className="w-6 h-6" />,
+              title: "Card Payments",
+              desc: "Recurring debit/credit card deductions replace GIRO.",
+              gradient: "gradient-gold",
+              iconColor: "text-primary"
+            },
+            {
+              icon: <Clock className="w-6 h-6" />,
+              title: "Track Status",
+              desc: "Monitor your application and payment status online.",
+              gradient: "bg-secondary",
+              iconColor: "text-foreground"
+            }].
+            map((item, i) =>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-card rounded-xl border p-6 shadow-card">
+              
                 <div className={`w-12 h-12 rounded-xl ${item.gradient} flex items-center justify-center mb-4`}>
                   <span className={item.iconColor}>{item.icon}</span>
                 </div>
                 <h3 className="font-semibold text-foreground text-lg mb-2 font-body">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
               </motion.div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -127,8 +127,8 @@ const Index = () => {
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
-          >
+            className="text-center mb-12">
+            
             <h2 className="text-3xl font-heading font-bold text-foreground mb-3">Choose Your Plan</h2>
             <p className="text-muted-foreground max-w-md mx-auto">
               Monthly donations that give back with complimentary funeral services for you and your loved ones.
@@ -141,8 +141,8 @@ const Index = () => {
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="rounded-xl border-2 border-border p-8 bg-background"
-            >
+              className="rounded-xl border-2 border-border p-8 bg-background">
+              
               <h3 className="text-xl font-heading font-bold text-foreground mb-1">Pintar</h3>
               <p className="text-3xl font-heading font-bold text-primary mb-4">
                 $5<span className="text-base text-muted-foreground font-body font-normal">/month</span>
@@ -156,8 +156,8 @@ const Index = () => {
               <Button
                 variant="outline"
                 className="w-full h-12 rounded-lg"
-                onClick={() => navigate(isLoggedIn ? "/apply" : "/auth")}
-              >
+                onClick={() => navigate(isLoggedIn ? "/apply" : "/auth")}>
+                
                 Get Started
               </Button>
             </motion.div>
@@ -168,8 +168,8 @@ const Index = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="rounded-xl border-2 border-primary p-8 bg-background relative overflow-hidden"
-            >
+              className="rounded-xl border-2 border-primary p-8 bg-background relative overflow-hidden">
+              
               <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-semibold px-4 py-1.5 rounded-bl-xl">
                 Recommended
               </div>
@@ -186,8 +186,8 @@ const Index = () => {
               </ul>
               <Button
                 className="w-full h-12 rounded-lg font-semibold"
-                onClick={() => navigate(isLoggedIn ? "/apply" : "/auth")}
-              >
+                onClick={() => navigate(isLoggedIn ? "/apply" : "/auth")}>
+                
                 Get Started
               </Button>
             </motion.div>
@@ -212,8 +212,8 @@ const Index = () => {
           </p>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
