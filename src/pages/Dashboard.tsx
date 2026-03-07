@@ -328,27 +328,28 @@ const Dashboard = () => {
             </div>
             <div>
               <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.benefits")}</h4>
+              <ul className="text-sm text-muted-foreground space-y-1 list-none list-inside">
+                <li>
+                  <strong>Family Coverage</strong>
+                </li>
+              </ul>
+              <ul className="ml-6 list-disc">
+                <li>All Individual Benefits</li>
+                <li>Complimentary Funeral Service for</li>
+              </ul>
+              <ul className="ml-12 list-disc">
+                <li>Immediate Family</li>
+                <li>Same-address family members (Spouse, Children, Parents, Siblings)</li>
+              </ul>
+              <ul className="ml-6 list-disc">
+                <li>50% coverage for funeral services for parents/parents-in-law not living in the same household</li>
+              </ul>
               <p className="text-sm text-muted-foreground">123</p>
             </div>
           </div>
           <div className="mt-4 pt-4 border-t">
             <h4 className="font-semibold text-foreground mb-2 text-sm font-body">Additional Charges</h4>
-            <ul className="text-sm text-muted-foreground space-y-1 list-none list-inside">
-              <li>
-                <strong>Family Coverage</strong>
-              </li>
-            </ul>
-            <ul className="ml-6 list-disc">
-              <li>All Individual Benefits</li>
-              <li>Complimentary Funeral Service for</li>
-            </ul>
-            <ul className="ml-12 list-disc">
-              <li>Immediate Family</li>
-              <li>Same-address family members (Spouse, Children, Parents, Siblings)</li>
-            </ul>
-            <ul className="ml-6 list-disc">
-              <li>50% coverage for funeral services for parents/parents-in-law not living in the same household</li>
-            </ul>
+            <p className="text-sm text-muted-foreground">123</p>
           </div>
         </motion.div>
 
