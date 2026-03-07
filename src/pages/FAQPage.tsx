@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSettings } from "@/contexts/SettingsContext";
 import {
   Accordion,
   AccordionContent,
