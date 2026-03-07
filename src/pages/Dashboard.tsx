@@ -16,7 +16,6 @@ import {
   XCircle,
 } from "lucide-react";
 import CoursesSection from "@/components/CoursesSection";
-import HasanatProgressBar from "@/components/HasanatProgressBar";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -177,8 +176,6 @@ const Dashboard = () => {
           <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
         </motion.div>
 
-        {user && <HasanatProgressBar userId={user.id} />}
-
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -336,7 +333,22 @@ const Dashboard = () => {
           </div>
           <div className="mt-4 pt-4 border-t">
             <h4 className="font-semibold text-foreground mb-2 text-sm font-body">Additional Charges</h4>
-            <p className="text-sm text-muted-foreground">123</p>
+            <ul className="text-sm text-muted-foreground space-y-1 list-none list-inside">
+              <li>
+                <strong>Family Coverage</strong>
+              </li>
+            </ul>
+            <ul className="ml-6 list-disc">
+              <li>All Individual Benefits</li>
+              <li>Complimentary Funeral Service for</li>
+            </ul>
+            <ul className="ml-12 list-disc">
+              <li>Immediate Family</li>
+              <li>Same-address family members (Spouse, Children, Parents, Siblings)</li>
+            </ul>
+            <ul className="ml-6 list-disc">
+              <li>50% coverage for funeral services for parents/parents-in-law not living in the same household</li>
+            </ul>
           </div>
         </motion.div>
 
