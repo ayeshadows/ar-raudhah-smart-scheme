@@ -24,6 +24,7 @@ const ApplyPage = () => {
   const { t } = useSettings();
   const [step, setStep] = useState<"start" | "singpass" | "form">("start");
   const [plan, setPlan] = useState<"pintar" | "pintar_plus">("pintar");
+  const [donationAmount, setDonationAmount] = useState("");
   const [formData, setFormData] = useState({
     full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: ""
   });
@@ -46,6 +47,15 @@ const ApplyPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const amount = Number(donationAmount);
+    if (plan === "pintar" && (amount < 5 || amount > 15)) {
+      toast.error(t("apply.donationHint.pintar"));
+      return;
+    }
+    if (plan === "pintar_plus" && amount < 20) {
+      toast.error(t("apply.donationHint.pintar_plus"));
+      return;
+    }
     setSubmitting(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -181,6 +191,23 @@ const ApplyPage = () => {
               <div className="space-y-2">
                 <Label className="text-sm font-medium">{t("apply.address")}</Label>
                 <Input value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} required className="h-12 rounded-lg" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">{t("apply.donationAmount")}</Label>
+                <Input
+                  type="number"
+                  value={donationAmount}
+                  onChange={(e) => setDonationAmount(e.target.value)}
+                  required
+                  min={plan === "pintar" ? 5 : 20}
+                  max={plan === "pintar" ? 15 : undefined}
+                  step="1"
+                  placeholder={plan === "pintar" ? "$5 - $15" : "$20+"}
+                  className="h-12 rounded-lg"
+                />
+                <p className="text-xs text-muted-foreground">
+                  {plan === "pintar" ? t("apply.donationHint.pintar") : t("apply.donationHint.pintar_plus")}
+                </p>
               </div>
               <div className="bg-secondary rounded-xl p-4">
                 <p className="text-sm font-semibold text-foreground mb-1 font-body">{t("apply.selectedPlan")}</p>
