@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle, Mail, Receipt, XCircle } from "lucide-react";
+import CoursesSection from "@/components/CoursesSection";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { useSettings } from "@/contexts/SettingsContext";
@@ -236,6 +237,8 @@ const Dashboard = () => {
             </ul>
           </div>
         </motion.div>
+
+        <CoursesSection applications={applications} />
       </main>
 
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
