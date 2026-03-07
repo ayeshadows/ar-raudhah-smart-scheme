@@ -50,6 +50,7 @@ const faqs = [
 
 const FAQPage = () => {
   const navigate = useNavigate();
+  const { t } = useSettings();
 
   return (
     <div className="min-h-screen bg-background">
