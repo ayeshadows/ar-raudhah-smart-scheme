@@ -79,6 +79,7 @@ const Dashboard = () => {
             <div>
               <h1 className="text-lg font-heading font-semibold text-foreground">Skim Pintar</h1>
               <p className="text-xs text-muted-foreground">Masjid Ar-Raudhah</p>
+            </div>
           </div>
           <div className="flex items-center gap-1">
             <Button
