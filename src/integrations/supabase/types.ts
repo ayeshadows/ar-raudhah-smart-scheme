@@ -14,7 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          address: string | null
+          cancelled_at: string | null
+          created_at: string
+          date_of_birth: string | null
+          email: string | null
+          full_name: string
+          id: string
+          nric: string
+          phone: string | null
+          plan: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          cancelled_at?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          nric: string
+          phone?: string | null
+          plan?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          cancelled_at?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          nric?: string
+          phone?: string | null
+          plan?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          application_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          status: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          application_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          status?: string
+          type?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          application_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          status?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
