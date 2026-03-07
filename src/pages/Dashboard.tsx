@@ -312,7 +312,7 @@ const Dashboard = () => {
                   <strong>Individual Coverage</strong>
                 </li>
               </ul>
-              <ul className="list-disc">
+              <ul className="ml-6 list-disc">
                 <li>Complimentary Funeral Services</li>
               </ul>
               <ul className="ml-12 list-disc">
