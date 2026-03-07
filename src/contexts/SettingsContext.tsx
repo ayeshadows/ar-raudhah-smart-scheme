@@ -56,8 +56,8 @@ const translations: Record<Language, Record<string, string>> = {
     // Plans
     "plan.pintar": "Pintar",
     "plan.pintarPlus": "Pintar Plus",
-    "plan.pintarPrice": "Pintar ($5/month)",
-    "plan.pintarPlusPrice": "Pintar Plus ($20/month)",
+    "plan.pintarPrice": "Pintar ($5-$15/month)",
+    "plan.pintarPlusPrice": "Pintar Plus ($20+/month)",
     "plan.pintarDesc": "Free funeral services for the donor in the event of death.",
     "plan.pintarPlusDesc": "Complimentary funeral services for the donor and immediate family living under one address.",
     "plan.recommended": "Recommended",
