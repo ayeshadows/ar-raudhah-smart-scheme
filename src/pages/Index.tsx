@@ -22,8 +22,8 @@ const Index = () => {
         <div className="container max-w-5xl mx-auto px-6 py-8">
           <div className="flex items-center justify-between mb-16 text-secondary-foreground">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center overflow-hidden">
-                <img src="/arraudhah_logo.jpg" alt="Masjid Ar-Raudhah Logo" className="w-7 h-7 object-contain" />
+              <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
+                <img src="/araudhah_logo.jpg" alt="Masjid Ar-Raudhah Logo" className="w-8 h-8 object-contain" />
               </div>
               <span className="font-heading font-semibold text-secondary-foreground">Masjid Ar-Raudhah</span>
             </div>
