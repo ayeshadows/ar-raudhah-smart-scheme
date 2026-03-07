@@ -82,8 +82,15 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={() => navigate("/settings")} className="text-muted-foreground">
-              <Settings className="w-4 h-4" />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => navigate("/settings")}
+              aria-label="Open settings"
+              title="Settings"
+              className="h-10 w-10 rounded-full border-border bg-card text-foreground shadow-card hover:bg-secondary"
+            >
+              <Settings className="w-5 h-5" />
             </Button>
             <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground">
               <LogOut className="w-4 h-4 mr-2" />

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { Settings } from "lucide-react";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -85,7 +86,19 @@ const AuthPage = () => {
       </div>
 
       {/* Right panel - form */}
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="relative flex-1 flex items-center justify-center p-8">
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          onClick={() => navigate("/settings")}
+          aria-label="Open settings"
+          title="Settings"
+          className="absolute right-6 top-6 z-10 h-10 w-10 rounded-full border-border bg-card/90 text-foreground shadow-card hover:bg-secondary"
+        >
+          <Settings className="h-5 w-5" />
+        </Button>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
