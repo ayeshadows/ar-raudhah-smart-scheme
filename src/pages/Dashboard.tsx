@@ -227,28 +227,24 @@ const Dashboard = () => {
           </div>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground mt-4 pt-4 border-t">
             <div>
-              <h4 className="font-semibold text-foreground mb-2 font-body">Pintar Benefits</h4>
-              <p className="text-muted-foreground">{/* Add Pintar benefits details here */}</p>
+              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintar")} — {t("plan.benefits")}</h4>
+              <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                <li>Bathing, shrouding, prayer, burial</li>
+                <li>Undertaker (Jurumandi)</li>
+                <li>Bathing and shrouding kits</li>
+                <li>Nisan, name plate, carpet grass</li>
+                <li>40-seater bus to cemetery (2 way)</li>
+                <li>20% off courses at Ar-Raudhah Mosque</li>
+              </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-2 font-body">Pintar Plus Benefits</h4>
-              <p className="text-muted-foreground">{/* Add Pintar Plus benefits details here */}</p>
+              <h4 className="font-semibold text-foreground mb-2 font-body">{t("plan.pintarPlus")} — {t("plan.benefits")}</h4>
+              <p className="text-sm text-muted-foreground">123</p>
             </div>
-          </div>
-          <div className="mt-4 pt-4 border-t">
-            <h4 className="font-semibold text-foreground mb-2 text-sm font-body">{t("plan.benefits")}</h4>
-            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-              <li>Bathing, shrouding, prayer, burial</li>
-              <li>Undertaker (Jurumandi)</li>
-              <li>Bathing and shrouding kits</li>
-              <li>Nisan, name plate, carpet grass</li>
-              <li>40-seater bus to cemetery (2 way)</li>
-              <li>20% off courses at Ar-Raudhah Mosque</li>
-            </ul>
           </div>
           <div className="mt-4 pt-4 border-t">
             <h4 className="font-semibold text-foreground mb-2 text-sm font-body">Additional Charges</h4>
-            <p className="text-sm text-muted-foreground">{/* Add additional charges information here */}</p>
+            <p className="text-sm text-muted-foreground">123</p>
           </div>
         </motion.div>
 
