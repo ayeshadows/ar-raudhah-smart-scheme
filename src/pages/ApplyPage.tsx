@@ -27,7 +27,8 @@ const ApplyPage = () => {
   const [donationAmount, setDonationAmount] = useState("");
   const [donationError, setDonationError] = useState("");
   const [formData, setFormData] = useState({
-    full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: ""
+    full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: "",
+    family_same_household: "", family_diff_household: ""
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -202,6 +203,24 @@ const ApplyPage = () => {
               <div className="space-y-2">
                 <Label className="text-sm font-medium">{t("apply.address")}</Label>
                 <Input value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} required className="h-12 rounded-lg" />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">{t("apply.familySameHousehold")}</Label>
+                <textarea
+                  value={formData.family_same_household}
+                  onChange={(e) => setFormData({ ...formData, family_same_household: e.target.value })}
+                  placeholder={t("apply.familySameHouseholdHint")}
+                  className="flex w-full rounded-lg border border-input bg-background px-3 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm min-h-[80px]"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">{t("apply.familyDiffHousehold")}</Label>
+                <textarea
+                  value={formData.family_diff_household}
+                  onChange={(e) => setFormData({ ...formData, family_diff_household: e.target.value })}
+                  placeholder={t("apply.familyDiffHouseholdHint")}
+                  className="flex w-full rounded-lg border border-input bg-background px-3 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm min-h-[80px]"
+                />
               </div>
               <div className="space-y-2">
                 <Label className="text-sm font-medium">{t("apply.donationAmount")}</Label>
