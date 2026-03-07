@@ -311,14 +311,18 @@ const Dashboard = () => {
                 <li>
                   <strong>Individual Coverage</strong>
                 </li>
+              </ul>
+              <ul className="list-disc">
                 <li>Complimentary Funeral Services</li>
-                <ul className="ml-12 list-disc">
-                  <li>Bathing, shrouding, prayer, burial</li>
-                  <li>Undertaker (Jurumandi)</li>
-                  <li>Bathing and shrouding kits (Soap, camphor, perfume, kain kafan)</li>
-                  <li>Nisan, name plate, carpet grass</li>
-                  <li>40-seater bus to cemetery (2 way)</li>
-                </ul>
+              </ul>
+              <ul className="ml-12 list-disc">
+                <li>Bathing, shrouding, prayer, burial</li>
+                <li>Undertaker (Jurumandi)</li>
+                <li>Bathing and shrouding kits (Soap, camphor, perfume, kain kafan)</li>
+                <li>Nisan, name plate, carpet grass</li>
+                <li>40-seater bus to cemetery (2 way)</li>
+              </ul>
+              <ul className="list-disc">
                 <li>20% off courses organised Ar-Raudhah Mosque</li>
               </ul>
             </div>
