@@ -74,7 +74,7 @@ const FAQPage = () => {
           animate={{ opacity: 1, y: 0 }}
         >
           <h2 className="text-2xl font-heading font-bold text-foreground mb-2">
-            Frequently Asked Questions
+            {t("faq.subtitle")}
           </h2>
           <p className="text-muted-foreground mb-8">
             Everything you need to know about Skim Pintar at Masjid Ar-Raudhah.
