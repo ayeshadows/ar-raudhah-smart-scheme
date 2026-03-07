@@ -209,17 +209,19 @@ const ApplyPage = () => {
                 <Input
                   type="number"
                   value={donationAmount}
-                  onChange={(e) => setDonationAmount(e.target.value)}
+                  onChange={(e) => handleDonationChange(e.target.value)}
                   required
-                  min={plan === "pintar" ? 5 : 20}
-                  max={plan === "pintar" ? 15 : undefined}
                   step="1"
                   placeholder={plan === "pintar" ? "$5 - $15" : "$20+"}
-                  className="h-12 rounded-lg"
+                  className={`h-12 rounded-lg ${donationError ? "border-destructive focus-visible:ring-destructive" : ""}`}
                 />
-                <p className="text-xs text-muted-foreground">
-                  {plan === "pintar" ? t("apply.donationHint.pintar") : t("apply.donationHint.pintar_plus")}
-                </p>
+                {donationError ? (
+                  <p className="text-xs text-destructive font-medium">{donationError}</p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    {plan === "pintar" ? t("apply.donationHint.pintar") : t("apply.donationHint.pintar_plus")}
+                  </p>
+                )}
               </div>
               <div className="bg-secondary rounded-xl p-4">
                 <p className="text-sm font-semibold text-foreground mb-1 font-body">{t("apply.selectedPlan")}</p>
