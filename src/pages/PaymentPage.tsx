@@ -97,11 +97,11 @@ const PaymentPage = () => {
             <div className="flex justify-between text-sm">
               <div>
                 <p className="text-xs opacity-60 mb-1 text-popover-foreground">Card Holder</p>
-                <p className="font-medium">{cardData.name || "YOUR NAME"}</p>
+                <p className="font-medium text-card-foreground">{cardData.name || "YOUR NAME"}</p>
               </div>
               <div>
                 <p className="text-xs opacity-60 mb-1">Expires</p>
-                <p className="font-medium">{cardData.expiry || "MM/YY"}</p>
+                <p className="font-medium text-card-foreground">{cardData.expiry || "MM/YY"}</p>
               </div>
             </div>
           </div>
