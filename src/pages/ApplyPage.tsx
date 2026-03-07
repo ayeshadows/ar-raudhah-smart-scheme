@@ -108,7 +108,7 @@ const ApplyPage = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <h3 className="font-semibold text-foreground font-body text-lg">{t("plan.pintar")}</h3>
-                      <p className="text-2xl font-heading font-bold text-primary">$5-$15/month<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
+                      <p className="text-2xl font-heading font-bold text-primary">$5-$15<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
                     </div>
                     <RadioGroupItem value="pintar" />
                   </div>
@@ -118,8 +118,7 @@ const ApplyPage = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <h3 className="font-semibold text-foreground font-body text-lg">{t("plan.pintarPlus")}</h3>
-                      <p className="text-2xl font-heading font-bold text-primary">$20+/month
-                      <span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
+                      <p className="text-2xl font-heading font-bold text-primary">$20+<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
                     </div>
                     <RadioGroupItem value="pintar_plus" />
                   </div>
