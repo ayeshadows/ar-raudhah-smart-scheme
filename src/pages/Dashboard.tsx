@@ -322,7 +322,7 @@ const Dashboard = () => {
                 <li>Nisan, name plate, carpet grass</li>
                 <li>40-seater bus to cemetery (2 way)</li>
               </ul>
-              <ul className="list-disc">
+              <ul className="ml-6 list-disc">
                 <li>20% off courses organised Ar-Raudhah Mosque</li>
               </ul>
             </div>
