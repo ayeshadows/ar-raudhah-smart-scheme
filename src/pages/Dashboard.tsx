@@ -225,6 +225,16 @@ const Dashboard = () => {
               <p>{t("plan.pintarPlusDesc")}</p>
             </div>
           </div>
+          <div className="grid md:grid-cols-2 gap-6 text-sm text-muted-foreground mt-4 pt-4 border-t">
+            <div>
+              <h4 className="font-semibold text-foreground mb-2 font-body">Pintar Benefits</h4>
+              <p className="text-muted-foreground">{/* Add Pintar benefits details here */}</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-foreground mb-2 font-body">Pintar Plus Benefits</h4>
+              <p className="text-muted-foreground">{/* Add Pintar Plus benefits details here */}</p>
+            </div>
+          </div>
           <div className="mt-4 pt-4 border-t">
             <h4 className="font-semibold text-foreground mb-2 text-sm font-body">{t("plan.benefits")}</h4>
             <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
@@ -235,6 +245,10 @@ const Dashboard = () => {
               <li>40-seater bus to cemetery (2 way)</li>
               <li>20% off courses at Ar-Raudhah Mosque</li>
             </ul>
+          </div>
+          <div className="mt-4 pt-4 border-t">
+            <h4 className="font-semibold text-foreground mb-2 text-sm font-body">Additional Charges</h4>
+            <p className="text-sm text-muted-foreground">{/* Add additional charges information here */}</p>
           </div>
         </motion.div>
 
