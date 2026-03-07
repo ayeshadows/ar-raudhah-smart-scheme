@@ -114,9 +114,6 @@ const Index = () => {
             Log in with Singpass
           </Button>
 
-          <p className="text-xs text-muted-foreground mb-8">
-            This is a simulated Singpass login for demonstration purposes.
-          </p>
 
           {/* Plan Cards */}
           <div className="space-y-3 text-left">
