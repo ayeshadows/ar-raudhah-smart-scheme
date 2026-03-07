@@ -49,7 +49,7 @@ const SettingsPage = () => {
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card shadow-card">
         <div className="container max-w-5xl mx-auto flex items-center gap-4 py-4 px-6">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/dashboard")}>
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>

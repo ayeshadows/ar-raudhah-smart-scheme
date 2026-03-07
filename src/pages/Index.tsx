@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Shield, HelpCircle, Mail, Settings, Info } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { t } = useSettings();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
 
@@ -50,7 +52,7 @@ const Index = () => {
               onClick={() => setAboutOpen(true)}
               className="text-foreground/80 hover:text-foreground hover:bg-foreground/10">
               <Info className="w-4 h-4 mr-1" />
-              About Us
+              {t("landing.aboutUs")}
             </Button>
             <Button
               variant="ghost"
@@ -58,7 +60,7 @@ const Index = () => {
               onClick={() => navigate("/faq")}
               className="text-foreground/80 hover:text-foreground hover:bg-foreground/10">
               <HelpCircle className="w-4 h-4 mr-1" />
-              FAQ
+              {t("nav.faq")}
             </Button>
             <Button
               variant="ghost"
@@ -66,7 +68,7 @@ const Index = () => {
               onClick={() => navigate("/contact")}
               className="text-foreground/80 hover:text-foreground hover:bg-foreground/10">
               <Mail className="w-4 h-4 mr-1" />
-              Contact Us
+              {t("nav.contactUs")}
             </Button>
             <Button
               variant="ghost"
@@ -74,7 +76,7 @@ const Index = () => {
               onClick={() => navigate("/settings")}
               className="text-foreground/80 hover:text-foreground hover:bg-foreground/10">
               <Settings className="w-4 h-4 mr-1" />
-              Settings
+              {t("nav.settings")}
             </Button>
           </div>
         </div>
@@ -94,11 +96,10 @@ const Index = () => {
           </div>
 
           <h1 className="text-2xl font-heading font-bold text-foreground mb-2">
-            Welcome to Skim Pintar
+            {t("landing.welcome")}
           </h1>
           <p className="text-sm text-muted-foreground mb-8 max-w-xs mx-auto">
-            Sign in with Singpass to apply for or manage your Skim Pintar
-            membership with Masjid Ar-Raudhah.
+            {t("landing.subtitle")}
           </p>
 
           {/* Singpass Button */}
@@ -111,7 +112,7 @@ const Index = () => {
               <path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               <circle cx="12" cy="15" r="1.5" fill="currentColor" />
             </svg>
-            Log in with Singpass
+            {t("landing.login")}
           </Button>
 
 
@@ -122,7 +123,7 @@ const Index = () => {
 
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Free funeral services for yourself
+                {t("landing.pintarDesc")}
               </p>
             </div>
             <div className="bg-secondary rounded-xl p-4 border border-border">
@@ -130,7 +131,7 @@ const Index = () => {
 
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Complimentary funeral services for your household
+                {t("landing.pintarPlusDesc")}
               </p>
             </div>
           </div>

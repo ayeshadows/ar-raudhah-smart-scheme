@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Settings, ArrowLeft } from "lucide-react";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +16,7 @@ const AuthPage = () => {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useSettings();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,17 +131,17 @@ const AuthPage = () => {
           </div>
 
           <h2 className="text-2xl font-heading font-semibold text-foreground mb-2">
-            {isLogin ? "Welcome back" : "Create account"}
+            {isLogin ? t("auth.welcomeBack") : t("auth.createAccount")}
           </h2>
           <p className="text-muted-foreground mb-8 font-body text-sm">
-            {isLogin ? "Sign in to manage your Skim Pintar membership" : "Register to apply for Skim Pintar"}
+            {isLogin ? t("auth.signInSubtitle") : t("auth.signUpSubtitle")}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="text-sm font-medium">
-                  Full Name
+                  {t("auth.fullName")}
                 </Label>
                 <Input
                   id="fullName"
@@ -155,7 +157,7 @@ const AuthPage = () => {
 
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">
-                Email
+                {t("auth.email")}
               </Label>
               <Input
                 id="email"
@@ -170,7 +172,7 @@ const AuthPage = () => {
 
             <div className="space-y-2">
               <Label htmlFor="password" className="text-sm font-medium">
-                Password
+                {t("auth.password")}
               </Label>
               <Input
                 id="password"
@@ -185,14 +187,14 @@ const AuthPage = () => {
             </div>
 
             <Button type="submit" disabled={loading} className="w-full h-12 rounded-lg text-base font-semibold">
-              {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
+              {loading ? t("auth.pleaseWait") : isLogin ? t("auth.signIn") : t("auth.signUp")}
             </Button>
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            {isLogin ? "Don't have an account? " : "Already have an account? "}
+            {isLogin ? t("auth.noAccount") : t("auth.hasAccount")}
             <button onClick={() => setIsLogin(!isLogin)} className="text-primary font-semibold hover:underline">
-              {isLogin ? "Sign up" : "Sign in"}
+              {isLogin ? t("auth.switchSignUp") : t("auth.switchSignIn")}
             </button>
           </p>
         </motion.div>
