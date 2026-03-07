@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle, Mail } from "lucide-react";
+import { LogOut, FileText, CreditCard, Clock, ChevronRight, Settings, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
 
 type Application = {
@@ -21,7 +21,9 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (!session) {
         navigate("/auth");
         return;
@@ -52,10 +54,14 @@ const Dashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "approved": return "bg-primary/10 text-primary";
-      case "pending": return "bg-accent/20 text-accent-foreground";
-      case "rejected": return "bg-destructive/10 text-destructive";
-      default: return "bg-muted text-muted-foreground";
+      case "approved":
+        return "bg-primary/10 text-primary";
+      case "pending":
+        return "bg-accent/20 text-accent-foreground";
+      case "rejected":
+        return "bg-destructive/10 text-destructive";
+      default:
+        return "bg-muted text-muted-foreground";
     }
   };
 
@@ -74,31 +80,19 @@ const Dashboard = () => {
         <div className="container max-w-5xl mx-auto flex items-center justify-between py-4 px-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
-              <span className="text-sm font-heading font-bold text-primary">AR</span>
+              <img
+                src="/araudhah_logo.jpg"
+                alt="Masjid Ar-Raudhah Logo"
+                className="w-10 h-10 rounded-lg object-contain"
+              />
             </div>
             <div>
               <h1 className="text-lg font-heading font-semibold text-foreground">Skim Pintar</h1>
               <p className="text-xs text-muted-foreground">Masjid Ar-Raudhah</p>
             </div>
-          </div>
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/faq")}
-              className="text-muted-foreground"
-            >
+            <Button variant="ghost" size="sm" onClick={() => navigate("/faq")} className="text-muted-foreground">
               <HelpCircle className="w-4 h-4 mr-1" />
               FAQ
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate("/contact")}
-              className="text-muted-foreground"
-            >
-              <Mail className="w-4 h-4 mr-1" />
-              Contact Us
             </Button>
           </div>
           <div className="flex items-center gap-2">
@@ -122,17 +116,11 @@ const Dashboard = () => {
 
       <main className="container max-w-5xl mx-auto px-6 py-10">
         {/* Welcome */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
-        >
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
           <h2 className="text-3xl font-heading font-bold text-foreground mb-2">
             Assalamualaikum, {user?.user_metadata?.full_name || "Member"}
           </h2>
-          <p className="text-muted-foreground">
-            Manage your Skim Pintar membership and applications.
-          </p>
+          <p className="text-muted-foreground">Manage your Skim Pintar membership and applications.</p>
         </motion.div>
 
         {/* Quick Actions */}
@@ -180,24 +168,21 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Applications */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
           <h3 className="text-xl font-heading font-semibold text-foreground mb-4">Your Applications</h3>
           {applications.length === 0 ? (
             <div className="bg-card rounded-xl border p-10 text-center shadow-card">
               <FileText className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
               <p className="text-muted-foreground mb-4">No applications yet</p>
-              <Button onClick={() => navigate("/apply")}>
-                Apply Now
-              </Button>
+              <Button onClick={() => navigate("/apply")}>Apply Now</Button>
             </div>
           ) : (
             <div className="space-y-3">
               {applications.map((app) => (
-                <div key={app.id} className="bg-card rounded-xl border p-5 shadow-card flex items-center justify-between">
+                <div
+                  key={app.id}
+                  className="bg-card rounded-xl border p-5 shadow-card flex items-center justify-between"
+                >
                   <div>
                     <p className="font-semibold text-foreground font-body">{app.full_name}</p>
                     <p className="text-sm text-muted-foreground">
@@ -206,7 +191,9 @@ const Dashboard = () => {
                       {new Date(app.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <span className={`text-xs font-semibold px-3 py-1.5 rounded-full capitalize ${getStatusColor(app.status)}`}>
+                  <span
+                    className={`text-xs font-semibold px-3 py-1.5 rounded-full capitalize ${getStatusColor(app.status)}`}
+                  >
                     {app.status}
                   </span>
                 </div>
