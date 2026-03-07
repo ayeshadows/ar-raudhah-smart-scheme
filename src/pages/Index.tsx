@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, CreditCard, Clock, Star } from "lucide-react";
+import { Shield, HelpCircle } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -11,223 +11,113 @@ const Index = () => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsLoggedIn(!!session);
+      if (session) {
+        setIsLoggedIn(true);
+      }
     });
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero */}
-      <header className="gradient-hero islamic-pattern relative overflow-hidden">
-        <div className="container max-w-5xl mx-auto px-6 py-8">
-          <div className="flex items-center justify-between mb-16 text-secondary-foreground">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
-                <img src="/araudhah_logo.jpg" alt="Masjid Ar-Raudhah Logo" className="w-8 h-8 object-contain" />
-              </div>
-              <span className="font-heading font-semibold text-secondary-foreground">Masjid Ar-Raudhah</span>
-            </div>
-            <Button
-              variant="outline"
-              onClick={() => navigate(isLoggedIn ? "/dashboard" : "/auth")}
-              className="border-primary-foreground/20 text-primary-foreground bg-primary-foreground/10 hover:bg-primary-foreground/20 hover:text-primary-foreground"
-            >
-              {isLoggedIn ? "Dashboard" : "Sign In"}
-            </Button>
-          </div>
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Full-page gradient background */}
+      <div className="absolute inset-0 gradient-hero islamic-pattern" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30" />
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl pb-16"
+      {/* Header */}
+      <header className="relative z-10 px-6 py-5">
+        <div className="container max-w-5xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img
+              src="/araudhah_logo.jpg"
+              alt="Masjid Ar-Raudhah Logo"
+              className="w-10 h-10 rounded-lg object-contain"
+            />
+            <div>
+              <span className="font-heading font-semibold text-primary-foreground block leading-tight">
+                Masjid Ar-Raudhah
+              </span>
+              <span className="text-xs text-primary-foreground/70">
+                Skim Pintar Portal
+              </span>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/faq")}
+            className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
           >
-            <div className="inline-flex items-center gap-2 bg-accent/20 rounded-full px-4 py-1.5 mb-6">
-              <Star className="w-3.5 h-3.5 text-accent" />
-              <span className="text-xs font-semibold text-accent">Now Digital — No More GIRO Forms</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-heading font-bold mb-5 leading-tight text-secondary-foreground">
-              Skim Pintar
-            </h1>
-            <p className="text-lg mb-8 max-w-lg text-secondary-foreground">
-              A monthly donation scheme with complimentary funeral services. Now with Singpass registration and
-              convenient card payments.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Button
-                onClick={() => navigate(isLoggedIn ? "/apply" : "/auth")}
-                className="h-12 px-8 rounded-lg text-base font-semibold gradient-gold text-primary hover:opacity-90"
-              >
-                Apply Now
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  document.getElementById("benefits")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="h-12 px-8 rounded-lg text-base border-primary-foreground/20 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground"
-              >
-                Learn More
-              </Button>
-            </div>
-          </motion.div>
+            <HelpCircle className="w-4 h-4 mr-1" />
+            FAQ
+          </Button>
         </div>
       </header>
 
-      {/* Features */}
-      <section className="py-16 px-6">
-        <div className="container max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: <Shield className="w-6 h-6" />,
-                title: "Singpass Registration",
-                desc: "Register instantly with MyInfo — no more paper forms.",
-                gradient: "gradient-primary",
-                iconColor: "text-primary-foreground",
-              },
-              {
-                icon: <CreditCard className="w-6 h-6" />,
-                title: "Card Payments",
-                desc: "Recurring debit/credit card deductions replace GIRO.",
-                gradient: "gradient-gold",
-                iconColor: "text-primary",
-              },
-              {
-                icon: <Clock className="w-6 h-6" />,
-                title: "Track Status",
-                desc: "Monitor your application and payment status online.",
-                gradient: "bg-secondary",
-                iconColor: "text-foreground",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-card rounded-xl border p-6 shadow-card"
-              >
-                <div className={`w-12 h-12 rounded-xl ${item.gradient} flex items-center justify-center mb-4`}>
-                  <span className={item.iconColor}>{item.icon}</span>
-                </div>
-                <h3 className="font-semibold text-foreground text-lg mb-2 font-body">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </motion.div>
-            ))}
+      {/* Center Card */}
+      <main className="relative z-10 flex-1 flex items-center justify-center px-6 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md bg-card rounded-2xl shadow-elevated p-8 text-center"
+        >
+          {/* Shield icon */}
+          <div className="w-16 h-16 rounded-2xl border-2 border-border flex items-center justify-center mx-auto mb-6">
+            <Shield className="w-8 h-8 text-primary" />
           </div>
-        </div>
-      </section>
 
-      {/* Plans */}
-      <section id="benefits" className="py-16 px-6 bg-card">
-        <div className="container max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
+          <h1 className="text-2xl font-heading font-bold text-foreground mb-2">
+            Welcome to Skim Pintar
+          </h1>
+          <p className="text-sm text-muted-foreground mb-8 max-w-xs mx-auto">
+            Sign in with Singpass to apply for or manage your Skim Pintar
+            membership with Masjid Ar-Raudhah.
+          </p>
+
+          {/* Singpass Button */}
+          <Button
+            onClick={() => navigate(isLoggedIn ? "/dashboard" : "/auth")}
+            className="w-full h-12 rounded-xl text-base font-semibold bg-[hsl(0,72%,51%)] hover:bg-[hsl(0,72%,45%)] text-white mb-3"
           >
-            <h2 className="text-3xl font-heading font-bold text-foreground mb-3">Choose Your Plan</h2>
-            <p className="text-muted-foreground max-w-md mx-auto">
-              Monthly donations that give back with complimentary funeral services for you and your loved ones.
-            </p>
-          </motion.div>
+            <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+              <path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="12" cy="15" r="1.5" fill="currentColor" />
+            </svg>
+            Log in with Singpass
+          </Button>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {/* Pintar */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="rounded-xl border-2 border-border p-8 bg-background"
-            >
-              <h3 className="text-xl font-heading font-bold text-foreground mb-1">Pintar</h3>
-              <p className="text-3xl font-heading font-bold text-primary mb-4">
-                $5<span className="text-base text-muted-foreground font-body font-normal">/month</span>
-              </p>
-              <ul className="space-y-2.5 text-sm text-muted-foreground mb-6">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> Free funeral services for donor
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> 20% off mosque courses
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> Bathing, shrouding, prayer & burial
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> Undertaker & kits included
-                </li>
-              </ul>
-              <Button
-                variant="outline"
-                className="w-full h-12 rounded-lg"
-                onClick={() => navigate(isLoggedIn ? "/apply" : "/auth")}
-              >
-                Get Started
-              </Button>
-            </motion.div>
+          <p className="text-xs text-muted-foreground mb-8">
+            This is a simulated Singpass login for demonstration purposes.
+          </p>
 
-            {/* Pintar Plus */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="rounded-xl border-2 border-primary p-8 bg-background relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-semibold px-4 py-1.5 rounded-bl-xl">
-                Recommended
-              </div>
-              <h3 className="text-xl font-heading font-bold text-foreground mb-1">Pintar Plus</h3>
-              <p className="text-3xl font-heading font-bold text-primary mb-4">
-                $20<span className="text-base text-muted-foreground font-body font-normal">/month</span>
+          {/* Plan Cards */}
+          <div className="space-y-3 text-left">
+            <div className="bg-secondary rounded-xl p-4 border border-border">
+              <p className="font-semibold text-foreground font-body text-sm">
+                Pintar — $5/month
               </p>
-              <ul className="space-y-2.5 text-sm text-muted-foreground mb-6">
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> Everything in Pintar
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> Covers immediate family (same address)
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> 50% off for parents not in household
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> 40-seater bus to cemetery (2 way)
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-primary mt-0.5">✓</span> Nisan, name plate & carpet grass
-                </li>
-              </ul>
-              <Button
-                className="w-full h-12 rounded-lg font-semibold"
-                onClick={() => navigate(isLoggedIn ? "/apply" : "/auth")}
-              >
-                Get Started
-              </Button>
-            </motion.div>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Free funeral services for yourself
+              </p>
+            </div>
+            <div className="bg-secondary rounded-xl p-4 border border-border">
+              <p className="font-semibold text-foreground font-body text-sm">
+                Pintar Plus — $20/month
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Complimentary funeral services for your household
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </motion.div>
+      </main>
 
       {/* Footer */}
-      <footer className="py-10 px-6 border-t">
-        <div className="container max-w-5xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-lg gradient-gold flex items-center justify-center">
-              <span className="text-xs font-heading font-bold text-primary">AR</span>
-            </div>
-            <span className="font-heading font-semibold text-foreground">Masjid Ar-Raudhah</span>
-          </div>
-          <p className="text-sm text-muted-foreground mb-2">Skim Pintar — Monthly Donation Scheme</p>
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Masjid Ar-Raudhah. All rights reserved.
-          </p>
-        </div>
+      <footer className="relative z-10 py-6 text-center">
+        <p className="text-xs text-primary-foreground/60">
+          © {new Date().getFullYear()} Masjid Ar-Raudhah. All rights reserved.
+        </p>
       </footer>
     </div>
   );
