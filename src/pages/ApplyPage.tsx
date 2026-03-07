@@ -25,6 +25,7 @@ const ApplyPage = () => {
   const [step, setStep] = useState<"start" | "singpass" | "form">("start");
   const [plan, setPlan] = useState<"pintar" | "pintar_plus">("pintar");
   const [donationAmount, setDonationAmount] = useState("");
+  const [donationError, setDonationError] = useState("");
   const [formData, setFormData] = useState({
     full_name: "", nric: "", date_of_birth: "", address: "", phone: "", email: ""
   });
@@ -45,15 +46,26 @@ const ApplyPage = () => {
     }, 2000);
   };
 
+  const validateDonation = (value: string, selectedPlan: string) => {
+    const amount = Number(value);
+    if (!value || isNaN(amount)) return t("apply.donationHint." + selectedPlan);
+    if (selectedPlan === "pintar" && (amount < 5 || amount > 15)) return t("apply.donationHint.pintar");
+    if (selectedPlan === "pintar_plus" && amount < 20) return t("apply.donationHint.pintar_plus");
+    return "";
+  };
+
+  const handleDonationChange = (value: string) => {
+    setDonationAmount(value);
+    if (value) setDonationError(validateDonation(value, plan));
+    else setDonationError("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const amount = Number(donationAmount);
-    if (plan === "pintar" && (amount < 5 || amount > 15)) {
-      toast.error(t("apply.donationHint.pintar"));
-      return;
-    }
-    if (plan === "pintar_plus" && amount < 20) {
-      toast.error(t("apply.donationHint.pintar_plus"));
+    const error = validateDonation(donationAmount, plan);
+    if (error) {
+      setDonationError(error);
+      toast.error(error);
       return;
     }
     setSubmitting(true);
@@ -197,17 +209,19 @@ const ApplyPage = () => {
                 <Input
                   type="number"
                   value={donationAmount}
-                  onChange={(e) => setDonationAmount(e.target.value)}
+                  onChange={(e) => handleDonationChange(e.target.value)}
                   required
-                  min={plan === "pintar" ? 5 : 20}
-                  max={plan === "pintar" ? 15 : undefined}
                   step="1"
                   placeholder={plan === "pintar" ? "$5 - $15" : "$20+"}
-                  className="h-12 rounded-lg"
+                  className={`h-12 rounded-lg ${donationError ? "border-destructive focus-visible:ring-destructive" : ""}`}
                 />
-                <p className="text-xs text-muted-foreground">
-                  {plan === "pintar" ? t("apply.donationHint.pintar") : t("apply.donationHint.pintar_plus")}
-                </p>
+                {donationError ? (
+                  <p className="text-xs text-destructive font-medium">{donationError}</p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    {plan === "pintar" ? t("apply.donationHint.pintar") : t("apply.donationHint.pintar_plus")}
+                  </p>
+                )}
               </div>
               <div className="bg-secondary rounded-xl p-4">
                 <p className="text-sm font-semibold text-foreground mb-1 font-body">{t("apply.selectedPlan")}</p>
