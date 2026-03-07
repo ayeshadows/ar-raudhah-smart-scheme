@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Shield, HelpCircle } from "lucide-react";
+import { Shield, HelpCircle, Mail } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -41,15 +41,26 @@ const Index = () => {
               </span>
             </div>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/faq")}
-            className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
-          >
-            <HelpCircle className="w-4 h-4 mr-1" />
-            FAQ
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/faq")}
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+            >
+              <HelpCircle className="w-4 h-4 mr-1" />
+              FAQ
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/contact")}
+              className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+            >
+              <Mail className="w-4 h-4 mr-1" />
+              Contact Us
+            </Button>
+          </div>
         </div>
       </header>
 
