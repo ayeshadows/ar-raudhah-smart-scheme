@@ -46,15 +46,26 @@ const ApplyPage = () => {
     }, 2000);
   };
 
+  const validateDonation = (value: string, selectedPlan: string) => {
+    const amount = Number(value);
+    if (!value || isNaN(amount)) return t("apply.donationHint." + selectedPlan);
+    if (selectedPlan === "pintar" && (amount < 5 || amount > 15)) return t("apply.donationHint.pintar");
+    if (selectedPlan === "pintar_plus" && amount < 20) return t("apply.donationHint.pintar_plus");
+    return "";
+  };
+
+  const handleDonationChange = (value: string) => {
+    setDonationAmount(value);
+    if (value) setDonationError(validateDonation(value, plan));
+    else setDonationError("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const amount = Number(donationAmount);
-    if (plan === "pintar" && (amount < 5 || amount > 15)) {
-      toast.error(t("apply.donationHint.pintar"));
-      return;
-    }
-    if (plan === "pintar_plus" && amount < 20) {
-      toast.error(t("apply.donationHint.pintar_plus"));
+    const error = validateDonation(donationAmount, plan);
+    if (error) {
+      setDonationError(error);
+      toast.error(error);
       return;
     }
     setSubmitting(true);
