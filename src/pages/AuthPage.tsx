@@ -80,7 +80,6 @@ const AuthPage = () => {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="w-full max-w-md"
       >
-          </div>
 
           <h2 className="text-2xl font-heading font-semibold text-foreground mb-2">
             {isLogin ? t("auth.welcomeBack") : t("auth.createAccount")}
