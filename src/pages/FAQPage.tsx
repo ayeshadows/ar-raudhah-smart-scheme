@@ -61,7 +61,7 @@ const FAQPage = () => {
           </Button>
           <div>
             <h1 className="text-lg font-heading font-semibold text-foreground">
-              FAQs
+              {t("faq.title")}
             </h1>
             <p className="text-xs text-muted-foreground">Skim Pintar</p>
           </div>
