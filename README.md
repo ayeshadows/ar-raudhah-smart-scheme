@@ -3,6 +3,7 @@
 ## Project info
 
 **URL**: https://skimpintar.lovable.app/
+**URL2**: https://ai.studio/apps/757fc796-06c5-406a-972f-2c3f37cc8e2b?fullscreenApplet=true
 
 ## How can I edit this code?
 
