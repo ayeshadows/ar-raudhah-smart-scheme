@@ -28,8 +28,10 @@ type PaymentCard = {
 
 const ApplyPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const draftId = searchParams.get("draft");
   const { t } = useSettings();
-  const [step, setStep] = useState<"start" | "singpass" | "form">("start");
+  const [step, setStep] = useState<"start" | "singpass" | "form">(draftId ? "form" : "start");
   const [plan, setPlan] = useState<"pintar" | "pintar_plus">("pintar");
   const [donationAmount, setDonationAmount] = useState("");
   const [donationError, setDonationError] = useState("");
@@ -47,8 +49,29 @@ const ApplyPage = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) { navigate("/auth"); return; }
       fetchCards(session.user.id);
+      if (draftId) loadDraft(draftId);
     });
   }, [navigate]);
+
+  const loadDraft = async (id: string) => {
+    const { data, error } = await supabase
+      .from("applications")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (!error && data) {
+      setFormData({
+        full_name: data.full_name || "",
+        nric: data.nric || "",
+        date_of_birth: data.date_of_birth || "",
+        address: data.address || "",
+        phone: data.phone || "",
+        email: data.email || "",
+      });
+      setPlan(data.plan as "pintar" | "pintar_plus");
+      if (data.payment_card_id) setSelectedCardId(data.payment_card_id);
+    }
+  };
 
   const fetchCards = async (userId: string) => {
     const { data, error } = await supabase
