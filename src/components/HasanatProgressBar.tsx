@@ -7,7 +7,16 @@ const LEVELS = [
   { points: 50, label: "Community Helper" },
   { points: 150, label: "Mosque Guardian" },
   { points: 300, label: "Pillar of the Ummah" },
-  { points: 500, label: "Legacy Contributor" },
+  {
+    points: 500,
+    label: (
+      <div className="text-center">
+        Legacy
+        <br />
+        Contributor
+      </div>
+    ),
+  },
 ];
 
 const HasanatProgressBar = ({ userId }: { userId: string }) => {
@@ -56,19 +65,13 @@ const HasanatProgressBar = ({ userId }: { userId: string }) => {
         </div>
       </div>
 
-      {currentLevel && (
-        <p className="text-sm text-primary font-semibold mb-1">
-          🏅 {currentLevel.label}
-        </p>
-      )}
+      {currentLevel && <p className="text-sm text-primary font-semibold mb-1">🏅 {currentLevel.label}</p>}
       {nextLevel && (
         <p className="text-xs text-muted-foreground mb-4">
           {nextLevel.points - totalPoints} points to <span className="font-medium">{nextLevel.label}</span>
         </p>
       )}
-      {!nextLevel && (
-        <p className="text-xs text-muted-foreground mb-4">Maximum level reached! 🎉</p>
-      )}
+      {!nextLevel && <p className="text-xs text-muted-foreground mb-4">Maximum level reached! 🎉</p>}
 
       {/* Progress bar */}
       <div className="relative">
@@ -94,15 +97,17 @@ const HasanatProgressBar = ({ userId }: { userId: string }) => {
               >
                 <div
                   className={`w-3 h-3 rounded-full border-2 -mt-[11px] ${
-                    reached
-                      ? "bg-primary border-primary"
-                      : "bg-card border-muted-foreground/40"
+                    reached ? "bg-primary border-primary" : "bg-card border-muted-foreground/40"
                   }`}
                 />
-                <span className={`text-[10px] mt-1 whitespace-nowrap ${reached ? "text-primary font-semibold" : "text-muted-foreground"}`}>
+                <span
+                  className={`text-[10px] mt-1 whitespace-nowrap ${reached ? "text-primary font-semibold" : "text-muted-foreground"}`}
+                >
                   {level.points}
                 </span>
-                <span className={`text-[9px] whitespace-nowrap ${reached ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                <span
+                  className={`text-[9px] whitespace-nowrap ${reached ? "text-foreground font-medium" : "text-muted-foreground"}`}
+                >
                   {level.label}
                 </span>
               </div>
@@ -128,7 +133,9 @@ const HasanatProgressBar = ({ userId }: { userId: string }) => {
 
         <div className="pt-3 border-t">
           <p className="mb-1 font-medium text-foreground text-sm">Redeem Your Points</p>
-          <p className="mb-2">Use your Hasanat points to book mosque services such as Nikah, Aqiqah, funeral arrangements, and more.</p>
+          <p className="mb-2">
+            Use your Hasanat points to book mosque services such as Nikah, Aqiqah, funeral arrangements, and more.
+          </p>
           <a
             href="https://arraudhahmosque.com/services/"
             target="_blank"
