@@ -14,8 +14,6 @@ import {
   Mail,
   Receipt,
   XCircle,
-  Plus,
-  Trash2,
 } from "lucide-react";
 import CoursesSection from "@/components/CoursesSection";
 import { toast } from "sonner";
@@ -39,14 +37,6 @@ type Application = {
   cancelled_at: string | null;
 };
 
-type PaymentCard = {
-  id: string;
-  card_last4: string;
-  card_holder: string;
-  card_expiry: string;
-  is_active: boolean;
-  created_at: string;
-};
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -57,10 +47,6 @@ const Dashboard = () => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [cancellingAppId, setCancellingAppId] = useState<string | null>(null);
   const [cancelling, setCancelling] = useState(false);
-  const [cards, setCards] = useState<PaymentCard[]>([]);
-  const [cancelCardDialogOpen, setCancelCardDialogOpen] = useState(false);
-  const [cancellingCardId, setCancellingCardId] = useState<string | null>(null);
-  const [cancellingCard, setCancellingCard] = useState(false);
 
   const fetchApplications = async (userId: string) => {
     const { data, error } = await supabase
@@ -71,33 +57,7 @@ const Dashboard = () => {
     if (!error && data) setApplications(data);
   };
 
-  const fetchCards = async (userId: string) => {
-    const { data, error } = await supabase
-      .from("payment_cards")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("is_active", true)
-      .order("created_at", { ascending: false });
-    if (!error && data) setCards(data as PaymentCard[]);
-  };
 
-  const handleCancelCard = async () => {
-    if (!cancellingCardId) return;
-    setCancellingCard(true);
-    const { error } = await supabase
-      .from("payment_cards")
-      .update({ is_active: false })
-      .eq("id", cancellingCardId);
-    if (error) {
-      toast.error("Failed to cancel card");
-    } else {
-      toast.success("Card removed successfully");
-      if (user) await fetchCards(user.id);
-    }
-    setCancellingCard(false);
-    setCancelCardDialogOpen(false);
-    setCancellingCardId(null);
-  };
 
   useEffect(() => {
     const {
@@ -116,7 +76,7 @@ const Dashboard = () => {
         return;
       }
       setUser(session.user);
-      Promise.all([fetchApplications(session.user.id), fetchCards(session.user.id)]).finally(() => setLoading(false));
+      fetchApplications(session.user.id).finally(() => setLoading(false));
     });
 
     return () => subscription.unsubscribe();
