@@ -370,6 +370,8 @@ const Dashboard = () => {
           >
             <Plus className="w-4 h-4 mr-2" /> Add Card
           </Button>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
