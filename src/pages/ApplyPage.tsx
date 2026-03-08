@@ -115,13 +115,19 @@ const ApplyPage = () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error("Not authenticated");
-      const { error } = await supabase.from("applications").insert({
-        user_id: session.user.id, full_name: formData.full_name || "Draft", nric: formData.nric || "DRAFT",
+      const draftData = {
+        full_name: formData.full_name || "Draft", nric: formData.nric || "DRAFT",
         date_of_birth: formData.date_of_birth || null, address: formData.address || null,
-        phone: formData.phone || null, email: formData.email || null, plan, status: "draft",
+        phone: formData.phone || null, email: formData.email || null, plan, status: "draft" as const,
         payment_card_id: selectedCardId || null
-      });
-      if (error) throw error;
+      };
+      if (draftId) {
+        const { error } = await supabase.from("applications").update(draftData).eq("id", draftId);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("applications").insert({ user_id: session.user.id, ...draftData });
+        if (error) throw error;
+      }
       toast.success("Application saved as draft. You can continue later from your dashboard.");
       navigate("/dashboard");
     } catch (error: any) { toast.error(error.message); } finally { setSubmitting(false); }
