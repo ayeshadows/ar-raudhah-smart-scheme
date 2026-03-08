@@ -252,10 +252,27 @@ const SettingsPage = () => {
                 </button>
               </div>
             </div>
-            <Button type="submit" disabled={changingPassword || !currentPassword || !newPassword || !confirmPassword}>
-              <Lock className="w-4 h-4 mr-2" />
-              {changingPassword ? t("settings.updating") : t("settings.updatePassword")}
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button type="submit" disabled={changingPassword || !currentPassword || !newPassword || !confirmPassword}>
+                <Lock className="w-4 h-4 mr-2" />
+                {changingPassword ? t("settings.updating") : t("settings.updatePassword")}
+              </Button>
+              <button
+                type="button"
+                onClick={async () => {
+                  const { data: { user } } = await supabase.auth.getUser();
+                  if (!user?.email) { toast.error("No email found for your account."); return; }
+                  const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+                    redirectTo: `${window.location.origin}/reset-password`,
+                  });
+                  if (error) { toast.error(error.message); return; }
+                  toast.success("Password reset link sent to your email!");
+                }}
+                className="text-sm text-primary font-semibold hover:underline"
+              >
+                {t("settings.forgotPassword") || "Forgot Password?"}
+              </button>
+            </div>
           </form>
         </motion.div>
 
