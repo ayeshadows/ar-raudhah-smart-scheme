@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,8 +33,24 @@ const PaymentPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setStep("verifying"); };
 
-  const handleOtpSubmit = () => {
+  const handleOtpSubmit = async () => {
     if (otp.length < 6) { toast.error("Please enter the full 6-digit token."); return; }
+    
+    // Save card to database
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const { error } = await supabase.from("payment_cards").insert({
+        user_id: session.user.id,
+        card_last4: cardData.number.replace(/\s/g, "").slice(-4),
+        card_holder: cardData.name,
+        card_expiry: cardData.expiry,
+      });
+      if (error) {
+        toast.error("Failed to save card. Please try again.");
+        return;
+      }
+    }
+    
     toast.success("Card verified and payment method saved!");
     setStep("success");
   };
