@@ -431,6 +431,23 @@ const Dashboard = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Draft</DialogTitle>
+            <DialogDescription>Are you sure you want to delete this draft? This action cannot be undone.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Keep Draft</Button>
+            </DialogClose>
+            <Button variant="destructive" onClick={handleDeleteDraft} disabled={deleting}>
+              {deleting ? "Deleting..." : "Yes, Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
