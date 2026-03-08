@@ -289,6 +289,31 @@ const ApplyPage = () => {
                   <Plus className="w-4 h-4" /> {t("apply.addMember")}
                 </Button>
               </div>
+              {/* Plan selector in form */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Selected Plan</Label>
+                <RadioGroup value={plan} onValueChange={(v) => { setPlan(v as "pintar" | "pintar_plus"); if (donationAmount) setDonationError(validateDonation(donationAmount, v)); }} className="grid grid-cols-2 gap-3">
+                  <label className={`cursor-pointer bg-card rounded-xl border-2 p-4 shadow-card transition-all ${plan === "pintar" ? "border-primary" : "border-transparent"}`}>
+                    <div className="flex items-center gap-2">
+                      <RadioGroupItem value="pintar" />
+                      <div>
+                        <p className="font-semibold text-foreground text-sm">{t("plan.pintar")}</p>
+                        <p className="text-xs text-muted-foreground">$5-$15/month</p>
+                      </div>
+                    </div>
+                  </label>
+                  <label className={`cursor-pointer bg-card rounded-xl border-2 p-4 shadow-card transition-all ${plan === "pintar_plus" ? "border-primary" : "border-transparent"}`}>
+                    <div className="flex items-center gap-2">
+                      <RadioGroupItem value="pintar_plus" />
+                      <div>
+                        <p className="font-semibold text-foreground text-sm">{t("plan.pintarPlus")}</p>
+                        <p className="text-xs text-muted-foreground">$20+/month</p>
+                      </div>
+                    </div>
+                  </label>
+                </RadioGroup>
+              </div>
+
               <div className="space-y-2">
                 <Label className="text-sm font-medium">{t("apply.donationAmount")}</Label>
                 <Input
@@ -342,31 +367,6 @@ const ApplyPage = () => {
                     </div>
                   </div>
                 )}
-              </div>
-
-              {/* Plan selector in form */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Selected Plan</Label>
-                <RadioGroup value={plan} onValueChange={(v) => { setPlan(v as "pintar" | "pintar_plus"); if (donationAmount) setDonationError(validateDonation(donationAmount, v)); }} className="grid grid-cols-2 gap-3">
-                  <label className={`cursor-pointer bg-card rounded-xl border-2 p-4 shadow-card transition-all ${plan === "pintar" ? "border-primary" : "border-transparent"}`}>
-                    <div className="flex items-center gap-2">
-                      <RadioGroupItem value="pintar" />
-                      <div>
-                        <p className="font-semibold text-foreground text-sm">{t("plan.pintar")}</p>
-                        <p className="text-xs text-muted-foreground">$5-$15/month</p>
-                      </div>
-                    </div>
-                  </label>
-                  <label className={`cursor-pointer bg-card rounded-xl border-2 p-4 shadow-card transition-all ${plan === "pintar_plus" ? "border-primary" : "border-transparent"}`}>
-                    <div className="flex items-center gap-2">
-                      <RadioGroupItem value="pintar_plus" />
-                      <div>
-                        <p className="font-semibold text-foreground text-sm">{t("plan.pintarPlus")}</p>
-                        <p className="text-xs text-muted-foreground">$20+/month</p>
-                      </div>
-                    </div>
-                  </label>
-                </RadioGroup>
               </div>
 
               <div className="flex gap-3 pt-2">
