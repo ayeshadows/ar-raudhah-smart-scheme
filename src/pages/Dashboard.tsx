@@ -39,6 +39,15 @@ type Application = {
   cancelled_at: string | null;
 };
 
+type PaymentCard = {
+  id: string;
+  card_last4: string;
+  card_holder: string;
+  card_expiry: string;
+  is_active: boolean;
+  created_at: string;
+};
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { t } = useSettings();
