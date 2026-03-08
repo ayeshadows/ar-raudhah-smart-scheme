@@ -14,6 +14,8 @@ import {
   Mail,
   Receipt,
   XCircle,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import CoursesSection from "@/components/CoursesSection";
 import { toast } from "sonner";
@@ -47,6 +49,9 @@ const Dashboard = () => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [cancellingAppId, setCancellingAppId] = useState<string | null>(null);
   const [cancelling, setCancelling] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingAppId, setDeletingAppId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchApplications = async (userId: string) => {
     const { data, error } = await supabase
@@ -107,12 +112,32 @@ const Dashboard = () => {
     setCancellingAppId(null);
   };
 
+  const handleDeleteDraft = async () => {
+    if (!deletingAppId) return;
+    setDeleting(true);
+    const { error } = await supabase
+      .from("applications")
+      .delete()
+      .eq("id", deletingAppId);
+    if (error) {
+      toast.error("Failed to delete draft");
+    } else {
+      toast.success("Draft deleted successfully");
+      if (user) await fetchApplications(user.id);
+    }
+    setDeleting(false);
+    setDeleteDialogOpen(false);
+    setDeletingAppId(null);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "approved":
         return "bg-primary/10 text-primary";
       case "pending":
         return "bg-accent/20 text-accent-foreground";
+      case "draft":
+        return "bg-secondary text-secondary-foreground";
       case "rejected":
         return "bg-destructive/10 text-destructive";
       case "cancelled":
@@ -263,6 +288,31 @@ const Dashboard = () => {
                     >
                       {app.status}
                     </span>
+                    {app.status === "draft" && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-foreground hover:bg-secondary"
+                          title="Edit draft"
+                          onClick={() => navigate(`/apply?draft=${app.id}`)}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                          title="Delete draft"
+                          onClick={() => {
+                            setDeletingAppId(app.id);
+                            setDeleteDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </>
+                    )}
                     {app.status === "pending" && (
                       <Button
                         variant="ghost"
@@ -377,6 +427,23 @@ const Dashboard = () => {
             </DialogClose>
             <Button variant="destructive" onClick={handleCancelApplication} disabled={cancelling}>
               {cancelling ? t("dashboard.cancelling") : t("dashboard.yesCancel")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Draft</DialogTitle>
+            <DialogDescription>Are you sure you want to delete this draft? This action cannot be undone.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Keep Draft</Button>
+            </DialogClose>
+            <Button variant="destructive" onClick={handleDeleteDraft} disabled={deleting}>
+              {deleting ? "Deleting..." : "Yes, Delete"}
             </Button>
           </DialogFooter>
         </DialogContent>
