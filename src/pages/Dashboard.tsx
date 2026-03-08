@@ -381,23 +381,6 @@ const Dashboard = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <Dialog open={cancelCardDialogOpen} onOpenChange={setCancelCardDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Remove Payment Card</DialogTitle>
-            <DialogDescription>Are you sure you want to remove this card? You can always add it again later.</DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Keep Card</Button>
-            </DialogClose>
-            <Button variant="destructive" onClick={handleCancelCard} disabled={cancellingCard}>
-              {cancellingCard ? "Removing..." : "Yes, Remove"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
