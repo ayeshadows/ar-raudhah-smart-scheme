@@ -112,12 +112,32 @@ const Dashboard = () => {
     setCancellingAppId(null);
   };
 
+  const handleDeleteDraft = async () => {
+    if (!deletingAppId) return;
+    setDeleting(true);
+    const { error } = await supabase
+      .from("applications")
+      .delete()
+      .eq("id", deletingAppId);
+    if (error) {
+      toast.error("Failed to delete draft");
+    } else {
+      toast.success("Draft deleted successfully");
+      if (user) await fetchApplications(user.id);
+    }
+    setDeleting(false);
+    setDeleteDialogOpen(false);
+    setDeletingAppId(null);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "approved":
         return "bg-primary/10 text-primary";
       case "pending":
         return "bg-accent/20 text-accent-foreground";
+      case "draft":
+        return "bg-secondary text-secondary-foreground";
       case "rejected":
         return "bg-destructive/10 text-destructive";
       case "cancelled":
