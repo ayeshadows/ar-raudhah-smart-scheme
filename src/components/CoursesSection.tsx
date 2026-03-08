@@ -67,7 +67,7 @@ const getDiscount = (applications: Application[]) => {
     (a) => a.status === "approved" || a.status === "pending"
   );
   if (!activeApp) return { percent: 0, label: "No active plan" };
-  if (activeApp.plan === "pintar_plus") return { percent: 50, label: "Pintar Plus (50% off)" };
+  if (activeApp.plan === "pintar_plus") return { percent: 20, label: "Pintar Plus (20% off)" };
   return { percent: 20, label: "Pintar (20% off)" };
 };
 
