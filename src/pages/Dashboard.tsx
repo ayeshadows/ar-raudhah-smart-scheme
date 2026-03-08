@@ -57,6 +57,10 @@ const Dashboard = () => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [cancellingAppId, setCancellingAppId] = useState<string | null>(null);
   const [cancelling, setCancelling] = useState(false);
+  const [cards, setCards] = useState<PaymentCard[]>([]);
+  const [cancelCardDialogOpen, setCancelCardDialogOpen] = useState(false);
+  const [cancellingCardId, setCancellingCardId] = useState<string | null>(null);
+  const [cancellingCard, setCancellingCard] = useState(false);
 
   const fetchApplications = async (userId: string) => {
     const { data, error } = await supabase
