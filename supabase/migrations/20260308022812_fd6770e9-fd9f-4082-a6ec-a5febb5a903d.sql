@@ -1,0 +1,1 @@
+ALTER TABLE public.applications ADD COLUMN payment_card_id uuid REFERENCES public.payment_cards(id) DEFAULT NULL;

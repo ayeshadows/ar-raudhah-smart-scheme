@@ -24,6 +24,7 @@ export type Database = {
           full_name: string
           id: string
           nric: string
+          payment_card_id: string | null
           phone: string | null
           plan: string
           status: string
@@ -39,6 +40,7 @@ export type Database = {
           full_name: string
           id?: string
           nric: string
+          payment_card_id?: string | null
           phone?: string | null
           plan?: string
           status?: string
@@ -54,13 +56,22 @@ export type Database = {
           full_name?: string
           id?: string
           nric?: string
+          payment_card_id?: string | null
           phone?: string | null
           plan?: string
           status?: string
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "applications_payment_card_id_fkey"
+            columns: ["payment_card_id"]
+            isOneToOne: false
+            referencedRelation: "payment_cards"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contact_queries: {
         Row: {
