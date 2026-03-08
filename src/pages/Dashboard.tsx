@@ -288,6 +288,31 @@ const Dashboard = () => {
                     >
                       {app.status}
                     </span>
+                    {app.status === "draft" && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-foreground hover:bg-secondary"
+                          title="Edit draft"
+                          onClick={() => navigate(`/apply?draft=${app.id}`)}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                          title="Delete draft"
+                          onClick={() => {
+                            setDeletingAppId(app.id);
+                            setDeleteDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </>
+                    )}
                     {app.status === "pending" && (
                       <Button
                         variant="ghost"
