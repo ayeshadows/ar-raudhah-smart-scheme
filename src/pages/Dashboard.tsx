@@ -71,6 +71,34 @@ const Dashboard = () => {
     if (!error && data) setApplications(data);
   };
 
+  const fetchCards = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("payment_cards")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("is_active", true)
+      .order("created_at", { ascending: false });
+    if (!error && data) setCards(data as PaymentCard[]);
+  };
+
+  const handleCancelCard = async () => {
+    if (!cancellingCardId) return;
+    setCancellingCard(true);
+    const { error } = await supabase
+      .from("payment_cards")
+      .update({ is_active: false })
+      .eq("id", cancellingCardId);
+    if (error) {
+      toast.error("Failed to cancel card");
+    } else {
+      toast.success("Card removed successfully");
+      if (user) await fetchCards(user.id);
+    }
+    setCancellingCard(false);
+    setCancelCardDialogOpen(false);
+    setCancellingCardId(null);
+  };
+
   useEffect(() => {
     const {
       data: { subscription },
