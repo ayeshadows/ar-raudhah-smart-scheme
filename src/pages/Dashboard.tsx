@@ -14,6 +14,8 @@ import {
   Mail,
   Receipt,
   XCircle,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import CoursesSection from "@/components/CoursesSection";
 import { toast } from "sonner";
@@ -37,6 +39,15 @@ type Application = {
   cancelled_at: string | null;
 };
 
+type PaymentCard = {
+  id: string;
+  card_last4: string;
+  card_holder: string;
+  card_expiry: string;
+  is_active: boolean;
+  created_at: string;
+};
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { t } = useSettings();
@@ -46,6 +57,10 @@ const Dashboard = () => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [cancellingAppId, setCancellingAppId] = useState<string | null>(null);
   const [cancelling, setCancelling] = useState(false);
+  const [cards, setCards] = useState<PaymentCard[]>([]);
+  const [cancelCardDialogOpen, setCancelCardDialogOpen] = useState(false);
+  const [cancellingCardId, setCancellingCardId] = useState<string | null>(null);
+  const [cancellingCard, setCancellingCard] = useState(false);
 
   const fetchApplications = async (userId: string) => {
     const { data, error } = await supabase
@@ -54,6 +69,34 @@ const Dashboard = () => {
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
     if (!error && data) setApplications(data);
+  };
+
+  const fetchCards = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("payment_cards")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("is_active", true)
+      .order("created_at", { ascending: false });
+    if (!error && data) setCards(data as PaymentCard[]);
+  };
+
+  const handleCancelCard = async () => {
+    if (!cancellingCardId) return;
+    setCancellingCard(true);
+    const { error } = await supabase
+      .from("payment_cards")
+      .update({ is_active: false })
+      .eq("id", cancellingCardId);
+    if (error) {
+      toast.error("Failed to cancel card");
+    } else {
+      toast.success("Card removed successfully");
+      if (user) await fetchCards(user.id);
+    }
+    setCancellingCard(false);
+    setCancelCardDialogOpen(false);
+    setCancellingCardId(null);
   };
 
   useEffect(() => {
@@ -73,7 +116,7 @@ const Dashboard = () => {
         return;
       }
       setUser(session.user);
-      fetchApplications(session.user.id).finally(() => setLoading(false));
+      Promise.all([fetchApplications(session.user.id), fetchCards(session.user.id)]).finally(() => setLoading(false));
     });
 
     return () => subscription.unsubscribe();
@@ -281,6 +324,54 @@ const Dashboard = () => {
           )}
         </motion.div>
 
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="mt-10">
+          <h3 className="text-xl font-heading font-semibold text-foreground mb-4">Your Payment Cards</h3>
+          {cards.length > 0 ? (
+            <div className="space-y-3">
+              {cards.map((card) => (
+                <div
+                  key={card.id}
+                  className="bg-card rounded-xl border p-5 shadow-card flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg gradient-gold flex items-center justify-center">
+                      <CreditCard className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground font-body">•••• •••• •••• {card.card_last4}</p>
+                      <p className="text-sm text-muted-foreground">{card.card_holder} · Exp {card.card_expiry}</p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    title="Remove card"
+                    onClick={() => {
+                      setCancellingCardId(card.id);
+                      setCancelCardDialogOpen(true);
+                    }}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-card rounded-xl border p-10 text-center shadow-card">
+              <CreditCard className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+              <p className="text-muted-foreground mb-4">No payment cards registered yet</p>
+            </div>
+          )}
+          <Button
+            variant="outline"
+            onClick={() => navigate("/payment")}
+            className="mt-4 w-full h-12 rounded-lg border-dashed border-2"
+          >
+            <Plus className="w-4 h-4 mr-2" /> Add Card
+          </Button>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -372,6 +463,23 @@ const Dashboard = () => {
             </DialogClose>
             <Button variant="destructive" onClick={handleCancelApplication} disabled={cancelling}>
               {cancelling ? t("dashboard.cancelling") : t("dashboard.yesCancel")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={cancelCardDialogOpen} onOpenChange={setCancelCardDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Remove Payment Card</DialogTitle>
+            <DialogDescription>Are you sure you want to remove this card? You can always add it again later.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Keep Card</Button>
+            </DialogClose>
+            <Button variant="destructive" onClick={handleCancelCard} disabled={cancellingCard}>
+              {cancellingCard ? "Removing..." : "Yes, Remove"}
             </Button>
           </DialogFooter>
         </DialogContent>
