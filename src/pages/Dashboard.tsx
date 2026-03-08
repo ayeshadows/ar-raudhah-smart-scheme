@@ -116,7 +116,7 @@ const Dashboard = () => {
         return;
       }
       setUser(session.user);
-      fetchApplications(session.user.id).finally(() => setLoading(false));
+      Promise.all([fetchApplications(session.user.id), fetchCards(session.user.id)]).finally(() => setLoading(false));
     });
 
     return () => subscription.unsubscribe();
