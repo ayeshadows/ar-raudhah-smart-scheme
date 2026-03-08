@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion } from "framer-motion";
-import { ArrowLeft, Shield, CheckCircle2, Plus, X } from "lucide-react";
+import { ArrowLeft, Shield, CheckCircle2, Plus, X, CreditCard, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { useSettings } from "@/contexts/SettingsContext";
 
@@ -17,6 +17,13 @@ const MOCK_MYINFO = {
   address: "Blk 123 Bishan Street 12, #08-456, Singapore 570123",
   phone: "91234567",
   email: "ahmad.abdullah@email.com"
+};
+
+type PaymentCard = {
+  id: string;
+  card_last4: string;
+  card_holder: string;
+  card_expiry: string;
 };
 
 const ApplyPage = () => {
@@ -32,12 +39,30 @@ const ApplyPage = () => {
   const [familySame, setFamilySame] = useState<string[]>([""]);
   const [familyDiff, setFamilyDiff] = useState<string[]>([""]);
   const [submitting, setSubmitting] = useState(false);
+  const [cards, setCards] = useState<PaymentCard[]>([]);
+  const [selectedCardId, setSelectedCardId] = useState<string>("");
+  const [loadingCards, setLoadingCards] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) navigate("/auth");
+      if (!session) { navigate("/auth"); return; }
+      fetchCards(session.user.id);
     });
   }, [navigate]);
+
+  const fetchCards = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("payment_cards")
+      .select("id, card_last4, card_holder, card_expiry")
+      .eq("user_id", userId)
+      .eq("is_active", true)
+      .order("created_at", { ascending: false });
+    if (!error && data) {
+      setCards(data as PaymentCard[]);
+      if (data.length === 1) setSelectedCardId(data[0].id);
+    }
+    setLoadingCards(false);
+  };
 
   const handleSingpass = () => {
     setStep("singpass");
@@ -62,12 +87,33 @@ const ApplyPage = () => {
     else setDonationError("");
   };
 
+  const handleSaveDraft = async () => {
+    setSubmitting(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error("Not authenticated");
+      const { error } = await supabase.from("applications").insert({
+        user_id: session.user.id, full_name: formData.full_name || "Draft", nric: formData.nric || "DRAFT",
+        date_of_birth: formData.date_of_birth || null, address: formData.address || null,
+        phone: formData.phone || null, email: formData.email || null, plan, status: "draft",
+        payment_card_id: null
+      });
+      if (error) throw error;
+      toast.success("Application saved as draft. Please set up a payment card first.");
+      navigate("/payment");
+    } catch (error: any) { toast.error(error.message); } finally { setSubmitting(false); }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const error = validateDonation(donationAmount, plan);
     if (error) {
       setDonationError(error);
       toast.error(error);
+      return;
+    }
+    if (!selectedCardId) {
+      toast.error("Please select a payment card");
       return;
     }
     setSubmitting(true);
@@ -77,14 +123,16 @@ const ApplyPage = () => {
       const { error } = await supabase.from("applications").insert({
         user_id: session.user.id, full_name: formData.full_name, nric: formData.nric,
         date_of_birth: formData.date_of_birth || null, address: formData.address || null,
-        phone: formData.phone || null, email: formData.email || null, plan, status: "pending"
+        phone: formData.phone || null, email: formData.email || null, plan, status: "pending",
+        payment_card_id: selectedCardId
       });
       if (error) throw error;
       toast.success("Application submitted successfully!");
       navigate("/status");
-    } catch (error: any) {toast.error(error.message);} finally
-    {setSubmitting(false);}
+    } catch (error: any) { toast.error(error.message); } finally { setSubmitting(false); }
   };
+
+  const hasCards = cards.length > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -266,6 +314,42 @@ const ApplyPage = () => {
                   </p>
                 )}
               </div>
+
+              <div className="space-y-3">
+                <Label className="text-sm font-medium">Payment Card</Label>
+                {loadingCards ? (
+                  <div className="text-sm text-muted-foreground animate-pulse">Loading cards...</div>
+                ) : hasCards ? (
+                  <RadioGroup value={selectedCardId} onValueChange={setSelectedCardId} className="space-y-2">
+                    {cards.map((card) => (
+                      <label
+                        key={card.id}
+                        className={`cursor-pointer flex items-center gap-4 bg-card rounded-xl border-2 p-4 shadow-card transition-all ${selectedCardId === card.id ? "border-primary" : "border-transparent"}`}
+                      >
+                        <RadioGroupItem value={card.id} />
+                        <div className="w-10 h-10 rounded-lg gradient-gold flex items-center justify-center">
+                          <CreditCard className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-foreground font-body text-sm">•••• •••• •••• {card.card_last4}</p>
+                          <p className="text-xs text-muted-foreground">{card.card_holder} · Exp {card.card_expiry}</p>
+                        </div>
+                      </label>
+                    ))}
+                  </RadioGroup>
+                ) : (
+                  <div className="bg-destructive/5 border border-destructive/20 rounded-xl p-4 flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">No payment card registered</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        You need to set up a payment card before submitting. You can save your application as a draft and set up a card first.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="bg-secondary rounded-xl p-4">
                 <p className="text-sm font-semibold text-foreground mb-1 font-body">{t("apply.selectedPlan")}</p>
                 <p className="text-sm text-muted-foreground">
@@ -274,9 +358,15 @@ const ApplyPage = () => {
               </div>
               <div className="flex gap-3 pt-2">
                 <Button type="button" variant="outline" onClick={() => setStep("start")} className="h-12 rounded-lg">{t("apply.back")}</Button>
-                <Button type="submit" disabled={submitting} className="flex-1 h-12 rounded-lg text-base font-semibold">
-                  {submitting ? t("apply.submitting") : t("apply.submit")}
-                </Button>
+                {hasCards ? (
+                  <Button type="submit" disabled={submitting || !selectedCardId} className="flex-1 h-12 rounded-lg text-base font-semibold">
+                    {submitting ? t("apply.submitting") : t("apply.submit")}
+                  </Button>
+                ) : (
+                  <Button type="button" onClick={handleSaveDraft} disabled={submitting} className="flex-1 h-12 rounded-lg text-base font-semibold">
+                    {submitting ? "Saving..." : "Save Draft & Set Up Card"}
+                  </Button>
+                )}
               </div>
             </form>
           </motion.div>
