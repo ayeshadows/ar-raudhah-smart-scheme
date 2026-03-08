@@ -1,1 +1,4 @@
 project_id = "lxwhgquisbkjouljycxy"
+
+[functions.demo-progress-application]
+verify_jwt = false

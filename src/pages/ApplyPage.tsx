@@ -155,12 +155,20 @@ const ApplyPage = () => {
         phone: formData.phone || null, email: formData.email || null, plan, status: "pending" as const,
         payment_card_id: selectedCardId
       };
+      let applicationId = draftId;
       if (draftId) {
         const { error } = await supabase.from("applications").update(appData).eq("id", draftId);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("applications").insert({ user_id: session.user.id, ...appData });
+        const { data, error } = await supabase.from("applications").insert({ user_id: session.user.id, ...appData }).select("id").single();
         if (error) throw error;
+        applicationId = data.id;
+      }
+      // Trigger demo auto-progression in background
+      if (applicationId) {
+        supabase.functions.invoke("demo-progress-application", {
+          body: { application_id: applicationId, donation_amount: Number(donationAmount) },
+        });
       }
       toast.success("Application submitted successfully!");
       navigate("/status");
