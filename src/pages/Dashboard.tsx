@@ -14,6 +14,8 @@ import {
   Mail,
   Receipt,
   XCircle,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import CoursesSection from "@/components/CoursesSection";
 import { toast } from "sonner";
