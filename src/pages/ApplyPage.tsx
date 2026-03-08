@@ -149,13 +149,19 @@ const ApplyPage = () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error("Not authenticated");
-      const { error } = await supabase.from("applications").insert({
-        user_id: session.user.id, full_name: formData.full_name, nric: formData.nric,
+      const appData = {
+        full_name: formData.full_name, nric: formData.nric,
         date_of_birth: formData.date_of_birth || null, address: formData.address || null,
-        phone: formData.phone || null, email: formData.email || null, plan, status: "pending",
+        phone: formData.phone || null, email: formData.email || null, plan, status: "pending" as const,
         payment_card_id: selectedCardId
-      });
-      if (error) throw error;
+      };
+      if (draftId) {
+        const { error } = await supabase.from("applications").update(appData).eq("id", draftId);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("applications").insert({ user_id: session.user.id, ...appData });
+        if (error) throw error;
+      }
       toast.success("Application submitted successfully!");
       navigate("/status");
     } catch (error: any) { toast.error(error.message); } finally { setSubmitting(false); }
