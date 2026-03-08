@@ -49,6 +49,9 @@ const Dashboard = () => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [cancellingAppId, setCancellingAppId] = useState<string | null>(null);
   const [cancelling, setCancelling] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingAppId, setDeletingAppId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchApplications = async (userId: string) => {
     const { data, error } = await supabase
