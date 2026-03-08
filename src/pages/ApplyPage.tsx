@@ -152,32 +152,26 @@ const ApplyPage = () => {
         {step === "start" &&
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
             <div>
-              <h2 className="text-2xl font-heading font-bold text-foreground mb-6">{t("apply.choosePlan")}</h2>
-              <RadioGroup value={plan} onValueChange={(v) => setPlan(v as "pintar" | "pintar_plus")} className="grid md:grid-cols-2 gap-4">
-                <label className={`cursor-pointer bg-card rounded-xl border-2 p-6 shadow-card transition-all ${plan === "pintar" ? "border-primary" : "border-transparent"}`}>
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="font-semibold text-foreground font-body text-lg">{t("plan.pintar")}</h3>
-                      <p className="text-2xl font-heading font-bold text-primary">$5-$15<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
-                    </div>
-                    <RadioGroupItem value="pintar" />
+              <h2 className="text-2xl font-heading font-bold text-foreground mb-6">Available Plans</h2>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-card rounded-xl border-2 border-transparent p-6 shadow-card">
+                  <div className="mb-3">
+                    <h3 className="font-semibold text-foreground font-body text-lg">{t("plan.pintar")}</h3>
+                    <p className="text-2xl font-heading font-bold text-primary">$5-$15<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
                   </div>
                   <p className="text-sm text-muted-foreground">{t("plan.pintarDesc")}</p>
-                </label>
-                <label className={`cursor-pointer bg-card rounded-xl border-2 p-6 shadow-card transition-all ${plan === "pintar_plus" ? "border-primary" : "border-transparent"}`}>
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="font-semibold text-foreground font-body text-lg">{t("plan.pintarPlus")}</h3>
-                      <p className="text-2xl font-heading font-bold text-primary">$20+<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
-                    </div>
-                    <RadioGroupItem value="pintar_plus" />
+                </div>
+                <div className="bg-card rounded-xl border-2 border-transparent p-6 shadow-card">
+                  <div className="mb-3">
+                    <h3 className="font-semibold text-foreground font-body text-lg">{t("plan.pintarPlus")}</h3>
+                    <p className="text-2xl font-heading font-bold text-primary">$20+<span className="text-sm text-muted-foreground font-body font-normal">/month</span></p>
                   </div>
                   <p className="text-sm text-muted-foreground">{t("plan.pintarPlusDesc")}</p>
                   <div className="mt-3 px-3 py-1.5 bg-accent/20 rounded-md inline-block">
                     <span className="text-xs font-semibold text-accent-foreground">{t("plan.recommended")}</span>
                   </div>
-                </label>
-              </RadioGroup>
+                </div>
+              </div>
             </div>
 
             <div>
