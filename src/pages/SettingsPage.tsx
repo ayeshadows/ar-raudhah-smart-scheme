@@ -3,10 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
-import { ArrowLeft, Moon, Sun, Type, Globe, Bell, Eye, Trash2 } from "lucide-react";
+import { ArrowLeft, Moon, Sun, Type, Globe, Bell, Eye, Trash2, Lock, Eye as EyeIcon, EyeOff } from "lucide-react";
 import { useSettings, type Language, type FontSize } from "@/contexts/SettingsContext";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -30,9 +31,58 @@ const SettingsPage = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+  // Password change state
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [showCurrentPw, setShowCurrentPw] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
+
   const handleToggle = (key: "darkMode" | "notifications" | "highContrast") => {
     updateSettings({ [key]: !settings[key] });
     toast.success(t("settings.saved"));
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword.length < 6) {
+      toast.error(t("settings.passwordTooShort"));
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error(t("settings.passwordMismatch"));
+      return;
+    }
+    setChangingPassword(true);
+    try {
+      // Verify current password by re-authenticating
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user?.email) throw new Error("No user found");
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword,
+      });
+      if (signInError) {
+        toast.error(t("settings.wrongPassword"));
+        return;
+      }
+
+      // Update password
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+
+      toast.success(t("settings.passwordChanged"));
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update password");
+    } finally {
+      setChangingPassword(false);
+    }
   };
 
   const handleDeleteAccount = async () => {
@@ -135,6 +185,78 @@ const SettingsPage = () => {
             </div>
             <Switch checked={settings.notifications} onCheckedChange={() => handleToggle("notifications")} />
           </div>
+        </motion.div>
+
+        {/* Change Password Section */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-card rounded-xl border p-6 shadow-card">
+          <h2 className="text-lg font-heading font-semibold text-foreground mb-6 flex items-center gap-2">
+            <Lock className="w-5 h-5 text-accent" /> {t("settings.changePassword")}
+          </h2>
+          <form onSubmit={handleChangePassword} className="space-y-4 max-w-sm">
+            <div className="space-y-2">
+              <Label htmlFor="currentPassword" className="text-sm font-semibold text-foreground">
+                {t("settings.currentPassword")}
+              </Label>
+              <div className="relative">
+                <Input
+                  id="currentPassword"
+                  type={showCurrentPw ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                  className="pr-10"
+                />
+                <button type="button" onClick={() => setShowCurrentPw(!showCurrentPw)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                  {showCurrentPw ? <EyeIcon className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="newPassword" className="text-sm font-semibold text-foreground">
+                {t("settings.newPassword")}
+              </Label>
+              <div className="relative">
+                <Input
+                  id="newPassword"
+                  type={showNewPw ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="pr-10"
+                />
+                <button type="button" onClick={() => setShowNewPw(!showNewPw)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                  {showNewPw ? <EyeIcon className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="text-sm font-semibold text-foreground">
+                {t("settings.confirmNewPassword")}
+              </Label>
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPw ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="pr-10"
+                />
+                <button type="button" onClick={() => setShowConfirmPw(!showConfirmPw)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                  {showConfirmPw ? <EyeIcon className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+            <Button type="submit" disabled={changingPassword || !currentPassword || !newPassword || !confirmPassword}>
+              <Lock className="w-4 h-4 mr-2" />
+              {changingPassword ? t("settings.updating") : t("settings.updatePassword")}
+            </Button>
+          </form>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-card rounded-xl border border-destructive/30 p-6 shadow-card">
