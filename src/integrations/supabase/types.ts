@@ -116,6 +116,36 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_cards: {
+        Row: {
+          card_expiry: string
+          card_holder: string
+          card_last4: string
+          created_at: string
+          id: string
+          is_active: boolean
+          user_id: string
+        }
+        Insert: {
+          card_expiry: string
+          card_holder: string
+          card_last4: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          user_id: string
+        }
+        Update: {
+          card_expiry?: string
+          card_holder?: string
+          card_last4?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
