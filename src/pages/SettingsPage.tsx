@@ -270,7 +270,7 @@ const SettingsPage = () => {
                 }}
                 className="text-sm text-primary font-semibold hover:underline"
               >
-                {t("settings.forgotPassword") || "Forgot Password?"}
+                Forgot Password?
               </button>
             </div>
           </form>
