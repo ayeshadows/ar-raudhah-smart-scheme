@@ -111,17 +111,32 @@ const HasanatProgressBar = ({ userId }: { userId: string }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-10 text-xs text-muted-foreground">
-        <div>
-          <p className="mb-1">Your contribution helps the mosque with:</p>
-          <ul className="list-disc ml-4 space-y-0.5">
-            <li>Utility and water bills</li>
-            <li>Islamic outreach / Dakwah</li>
-            <li>Everyday operations</li>
-          </ul>
+      <div className="mt-10 space-y-4 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="mb-1">Your contribution helps the mosque with:</p>
+            <ul className="list-disc ml-4 space-y-0.5">
+              <li>Utility and water bills</li>
+              <li>Islamic outreach / Dakwah</li>
+              <li>Everyday operations</li>
+            </ul>
+          </div>
+          <div className="text-right">
+            Total contributed: <span className="font-semibold text-foreground">${totalAmount.toFixed(2)}</span>
+          </div>
         </div>
-        <div className="text-right">
-          Total contributed: <span className="font-semibold text-foreground">${totalAmount.toFixed(2)}</span>
+
+        <div className="pt-3 border-t">
+          <p className="mb-1 font-medium text-foreground text-sm">Redeem Your Points</p>
+          <p className="mb-2">Use your Hasanat points to book mosque services such as Nikah, Aqiqah, funeral arrangements, and more.</p>
+          <a
+            href="https://arraudhahmosque.com/services/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-primary font-semibold hover:underline"
+          >
+            Book Mosque Services →
+          </a>
         </div>
       </div>
     </motion.div>
