@@ -18,6 +18,7 @@ import {
   Trash2,
 } from "lucide-react";
 import CoursesSection from "@/components/CoursesSection";
+import HasanatProgressBar from "@/components/HasanatProgressBar";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -197,6 +198,7 @@ const Dashboard = () => {
       </header>
 
       <main className="container max-w-5xl mx-auto px-6 py-10">
+        {user && <HasanatProgressBar userId={user.id} />}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
           <h2 className="text-3xl font-heading font-bold text-foreground mb-2">
             {t("dashboard.welcome")}, {user?.user_metadata?.full_name || "Member"}
