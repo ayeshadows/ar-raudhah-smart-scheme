@@ -59,6 +59,7 @@ const Dashboard = () => {
       .from("applications")
       .select("id, plan, status, created_at, full_name, cancelled_at")
       .eq("user_id", userId)
+      .neq("status", "cancelled")
       .order("created_at", { ascending: false });
     if (!error && data) setApplications(data);
   };
