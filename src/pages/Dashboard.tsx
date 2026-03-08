@@ -324,6 +324,52 @@ const Dashboard = () => {
           )}
         </motion.div>
 
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="mt-10">
+          <h3 className="text-xl font-heading font-semibold text-foreground mb-4">Your Payment Cards</h3>
+          {cards.length > 0 ? (
+            <div className="space-y-3">
+              {cards.map((card) => (
+                <div
+                  key={card.id}
+                  className="bg-card rounded-xl border p-5 shadow-card flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg gradient-gold flex items-center justify-center">
+                      <CreditCard className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground font-body">•••• •••• •••• {card.card_last4}</p>
+                      <p className="text-sm text-muted-foreground">{card.card_holder} · Exp {card.card_expiry}</p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    title="Remove card"
+                    onClick={() => {
+                      setCancellingCardId(card.id);
+                      setCancelCardDialogOpen(true);
+                    }}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-card rounded-xl border p-10 text-center shadow-card">
+              <CreditCard className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+              <p className="text-muted-foreground mb-4">No payment cards registered yet</p>
+            </div>
+          )}
+          <Button
+            variant="outline"
+            onClick={() => navigate("/payment")}
+            className="mt-4 w-full h-12 rounded-lg border-dashed border-2"
+          >
+            <Plus className="w-4 h-4 mr-2" /> Add Card
+          </Button>
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
