@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion } from "framer-motion";
-import { ArrowLeft, Shield, CheckCircle2, Plus, X, CreditCard, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Shield, CheckCircle2, Plus, X, CreditCard, AlertTriangle, Save } from "lucide-react";
 import { toast } from "sonner";
 import { useSettings } from "@/contexts/SettingsContext";
 
@@ -96,11 +96,11 @@ const ApplyPage = () => {
         user_id: session.user.id, full_name: formData.full_name || "Draft", nric: formData.nric || "DRAFT",
         date_of_birth: formData.date_of_birth || null, address: formData.address || null,
         phone: formData.phone || null, email: formData.email || null, plan, status: "draft",
-        payment_card_id: null
+        payment_card_id: selectedCardId || null
       });
       if (error) throw error;
-      toast.success("Application saved as draft. Please set up a payment card first.");
-      navigate("/payment");
+      toast.success("Application saved as draft. You can continue later from your dashboard.");
+      navigate("/dashboard");
     } catch (error: any) { toast.error(error.message); } finally { setSubmitting(false); }
   };
 
@@ -350,21 +350,43 @@ const ApplyPage = () => {
                 )}
               </div>
 
-              <div className="bg-secondary rounded-xl p-4">
-                <p className="text-sm font-semibold text-foreground mb-1 font-body">{t("apply.selectedPlan")}</p>
-                <p className="text-sm text-muted-foreground">
-                  {plan === "pintar" ? t("plan.pintarPrice") : t("plan.pintarPlusPrice")}
-                </p>
+              {/* Plan selector in form */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Selected Plan</Label>
+                <RadioGroup value={plan} onValueChange={(v) => { setPlan(v as "pintar" | "pintar_plus"); if (donationAmount) setDonationError(validateDonation(donationAmount, v)); }} className="grid grid-cols-2 gap-3">
+                  <label className={`cursor-pointer bg-card rounded-xl border-2 p-4 shadow-card transition-all ${plan === "pintar" ? "border-primary" : "border-transparent"}`}>
+                    <div className="flex items-center gap-2">
+                      <RadioGroupItem value="pintar" />
+                      <div>
+                        <p className="font-semibold text-foreground text-sm">{t("plan.pintar")}</p>
+                        <p className="text-xs text-muted-foreground">$5-$15/month</p>
+                      </div>
+                    </div>
+                  </label>
+                  <label className={`cursor-pointer bg-card rounded-xl border-2 p-4 shadow-card transition-all ${plan === "pintar_plus" ? "border-primary" : "border-transparent"}`}>
+                    <div className="flex items-center gap-2">
+                      <RadioGroupItem value="pintar_plus" />
+                      <div>
+                        <p className="font-semibold text-foreground text-sm">{t("plan.pintarPlus")}</p>
+                        <p className="text-xs text-muted-foreground">$20+/month</p>
+                      </div>
+                    </div>
+                  </label>
+                </RadioGroup>
               </div>
+
               <div className="flex gap-3 pt-2">
                 <Button type="button" variant="outline" onClick={() => setStep("start")} className="h-12 rounded-lg">{t("apply.back")}</Button>
+                <Button type="button" variant="secondary" onClick={handleSaveDraft} disabled={submitting} className="h-12 rounded-lg gap-2">
+                  <Save className="w-4 h-4" /> Save Draft
+                </Button>
                 {hasCards ? (
                   <Button type="submit" disabled={submitting || !selectedCardId} className="flex-1 h-12 rounded-lg text-base font-semibold">
                     {submitting ? t("apply.submitting") : t("apply.submit")}
                   </Button>
                 ) : (
-                  <Button type="button" onClick={handleSaveDraft} disabled={submitting} className="flex-1 h-12 rounded-lg text-base font-semibold">
-                    {submitting ? "Saving..." : "Save Draft & Set Up Card"}
+                  <Button type="button" onClick={() => { handleSaveDraft(); }} disabled={submitting} className="flex-1 h-12 rounded-lg text-base font-semibold">
+                    {submitting ? "Saving..." : "Save & Set Up Card"}
                   </Button>
                 )}
               </div>
